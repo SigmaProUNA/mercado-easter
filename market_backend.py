@@ -13,7 +13,11 @@ class Market():
         self.db.set_profit(self.config['profit'])
 
         self.current_transaction = []
+    
 
+    def generate_testing_data(self):
+        for x in range(100):
+            self.db.add_prod(f"Produto {x}", 10000, 100)
 
     # Vender produto
     def sell(self, prod_id, quantity):
@@ -22,5 +26,33 @@ class Market():
         if not product:
             raise exceptions.ProdNotFoundException("Produto não encontrado")
         else:
-            pass
+            if product['stock'] < quantity:
+                raise exceptions.NotEnoughItemsException("Quantidade insuficiente")
+            else:
+                # Colocar a venda
+                ''' Como colocar na lista:
+                    {
+                        "prod": product,
+                        "prod_id": product['id'],
+                        "stock": quantity,
+                        "total_sold": product['price'] * quantity,
+                        "total_profit": product['profit'] * quantity
+                    }
+                '''
+
+
+                self.current_transaction.append({
+                    "prod": product,
+                    "prod_id": product['id'],
+                    "quantity": quantity,
+                    "total_sold": product['price'] * quantity,
+                    "total_profit": product['profit'] * quantity
+                })
+
+
+if __name__ == "__main__":
+    market = Market("config.json")
+    market.generate_testing_data()
+    market.sell(2, 10)
+    print(market.current_transaction)
 
