@@ -15,7 +15,8 @@ class Database:
             "name": "prod_name",
             "base_price": "base_price",
             "profit": "profit",
-            "price": "unit_price"
+            "price": "unit_price",
+            "stock": "stock"
         }
     
     
@@ -38,16 +39,17 @@ class Database:
         
     
     # Adiciona produto
-    def add_prod(self, name, base_price):
+    def add_prod(self, name, base_price, stock):
         row = (
             name,
             base_price,
             finances.get_profit(self.profit_rate, base_price),
-            finances.add_profit(self.profit_rate, base_price)
+            finances.add_profit(self.profit_rate, base_price),
+            stock
             ) # A linha 
         
         self.cursor.execute(
-            f"INSERT INTO {self.product_table['table']} ({self.product_table['name']}, {self.product_table['base_price']}, {self.product_table['profit']}, {self.product_table['price']}) VALUES (?, ?, ?, ?)  RETURNING {self.product_table['id']}",
+            f"INSERT INTO {self.product_table['table']} ({self.product_table['name']}, {self.product_table['base_price']}, {self.product_table['profit']}, {self.product_table['price']}, {self.product_table['stock']}) VALUES (?, ?, ?, ?, ?)  RETURNING {self.product_table['id']}",
             row
         )
         #self.cursor.execute(f"INSERT INTO {self.product_table['table']} ({self.product_table['name']}, {self.product_table['price']}) VALUES (?, ?) RETURNING {self.product_table['id']}", (name, price))
@@ -99,7 +101,15 @@ class Database:
     def get_prod(self, prod_id):
         if self._prod_exists(prod_id):
             self.cursor.execute(f"SELECT * FROM {self.product_table['table']} WHERE id={prod_id}")
-            return self.cursor.fetchone()
+            res =  self.cursor.fetchone()
+            return {
+                "id": res[0],
+                "name": res[1],
+                "base_price": res[2],
+                "profit": res[3],
+                "price": res[4],
+                "stock": res[5]
+            }
         else:
             return False
         
@@ -114,7 +124,7 @@ if __name__ == "__main__":
     db = Database("database.db")
     db.initialize()
     db.set_profit(10)
-    prod_id = db.add_prod("Teste", 100)
+    prod_id = db.add_prod("Teste", 100, 100)
     db.update_price(prod_id, 200)
     db.update_name(prod_id, "Teste 2")
     print(db.get_prod(prod_id))

@@ -3,5 +3,6 @@ CREATE TABLE IF NOT EXISTS products (
     prod_name TEXT NOT NULL,
     base_price INTEGER NOT NULL,
     profit INTEGER NOT NULL,
-    unit_price INTEGER NOT NULL
+    unit_price INTEGER NOT NULL,
+    stock INTEGER NOT NULL
 )
