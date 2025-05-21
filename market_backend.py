@@ -54,7 +54,9 @@ class Market():
         # Primeiro, atualizar o estoque
         for transaction in self.current_transaction:
             self.db.prod_stock_update(transaction['prod_id'], transaction["prod"]["stock"] - transaction["quantity"])
-
+    
+        
+        
 
 if __name__ == "__main__":
     market = Market("config.json")
