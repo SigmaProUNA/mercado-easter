@@ -1,3 +1,9 @@
+"""
+Esse arquivo é para calculos de matemática financeiras. 
+"""
+
+
+
 # Padoes da industria financeira
 class Standards:
     INTERNATIONAL_SEP = "."
@@ -5,7 +11,7 @@ class Standards:
 
 
 # Converte centavos para dinheiro humano e retorna como float
-def cents_to_money(cents: int, money_unit: str = "R$", decimal_place: int = 2, separator_standard: str = Standards.BR_SEP) -> str:
+def cents_to_money(cents: int | str, money_unit: str = "R$", decimal_place: int = 2, separator_standard: str = Standards.BR_SEP) -> str:
     cents = str(cents)[::-1] # Inverter a string
     cents = cents[0:decimal_place] + separator_standard + cents[decimal_place:]# Separar os centavos 
     
