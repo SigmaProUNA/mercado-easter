@@ -103,10 +103,17 @@ class Database:
         else:
             return False
         
+
+    # Definir o rate de profit para calculo
+    def set_profit(self, profit: float):
+        self.profit_rate = profit / 100
+
+        
         
 if __name__ == "__main__":
     db = Database("database.db")
     db.initialize()
+    db.set_profit(10)
     prod_id = db.add_prod("Teste", 100)
     db.update_price(prod_id, 200)
     db.update_name(prod_id, "Teste 2")
