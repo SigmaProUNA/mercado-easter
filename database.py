@@ -1,5 +1,6 @@
 import sqlite3
 import finances
+import exceptions
 
 # Classe de banco de dados
 class Database:
@@ -66,8 +67,7 @@ class Database:
             self.conn.commit()
             return True
         else:
-            return False
-        
+            raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
         
     def update_price(self, prod_id, price):
         if self._prod_exists(prod_id):
@@ -86,7 +86,7 @@ class Database:
             self.conn.commit()
             return True
         else:
-            return False
+            raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
         
         
     def update_name(self, prod_id, name):
@@ -95,7 +95,7 @@ class Database:
             self.conn.commit()
             return True
         else:
-            return False
+            raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
         
         
     def get_prod(self, prod_id):
@@ -111,8 +111,16 @@ class Database:
                 "stock": res[5]
             }
         else:
-            return False
+            raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
         
+
+    def prod_stock_update(self, prod_id, stock):
+        if self._prod_exists(prod_id):
+            self.cursor.execute(f"UPDATE {self.product_table['table']} SET {self.product_table['stock']}={stock} WHERE {self.product_table['id']}={prod_id}")
+            self.conn.commit()
+        else:
+            raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
+            
 
     # Definir o rate de profit para calculo
     def set_profit(self, profit: float):

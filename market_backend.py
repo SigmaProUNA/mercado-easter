@@ -34,7 +34,7 @@ class Market():
                     {
                         "prod": product,
                         "prod_id": product['id'],
-                        "stock": quantity,
+                        "quantity": quantity,
                         "total_sold": product['price'] * quantity,
                         "total_profit": product['profit'] * quantity
                     }
@@ -50,9 +50,16 @@ class Market():
                 })
 
 
+    def finish_transaction(self):
+        # Primeiro, atualizar o estoque
+        for transaction in self.current_transaction:
+            self.db.prod_stock_update(transaction['prod_id'], transaction["prod"]["stock"] - transaction["quantity"])
+
+
 if __name__ == "__main__":
     market = Market("config.json")
     market.generate_testing_data()
     market.sell(2, 10)
     print(market.current_transaction)
+    market.finish_transaction()
 
