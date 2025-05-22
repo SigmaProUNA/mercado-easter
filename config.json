@@ -1,5 +1,14 @@
 {
     "db_path": "database.db",
     "sell_csv_path": "sell.csv",
-    "profit": 30
+    "report_path": "report",
+    "profit": 30,
+    "selected_lang": "ptbr",
+    "words": {
+        "ptbr": {
+            "sellings": "Vendas",
+            "data": "Dado",
+            "value": "Valor"
+        }
+    }
 }

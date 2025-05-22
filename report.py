@@ -1,14 +1,21 @@
 import os
+import finances
 import datetime
+import json
 
 # Classe para reportar vendas no arquivo de vendas em CSV
 class SellReport:
-    def __init__(self, path: str):
+    def __init__(self, path: str, config: str):
         self.path = path
         self.delimiter = ";"
         self.header = ["id", "date", "prod_id", "quantity", "total_sold", "total_profit"]
         self.id_index = 0 # O index responsável pelo id
+        self.quantity_index = 3
+        self.total_sold_index = 4
+        self.total_profit_index = 5
         self.datetime_format = "%Y-%m-%d"
+        self.config = json.load(open(config, "r"))
+        self.lang_dict = self.config["words"][self.config["selected_lang"]] # Lingua selecionada
     
 
     # Consegue o proximo id de venda
@@ -54,9 +61,27 @@ class SellReport:
         csv_f.write(self.delimiter.join(row)+"\n")
         csv_f.close()
 
+    
+    # Gerar o report de lucro e produtos mais vendidos no dia
+    def generate_day_report(self):
+        md_text = "" # O report será feito em markdown
+        today = datetime.datetime.now().strftime(self.datetime_format)
+
+        # Primeiro, calcular a venda e o lucro total do dia
+        md_text += f"# {self.lang_dict['sellings']}\n"
+        md_text += f"| {self.lang_dict['data']}    | {self.lang_dict['value']} |\n"
+        
+        # Total de venda
+
+        # Salva o markdown
+        os.makedirs(self.config['report_path'], exist_ok=True)
+        open(f"{self.config['report_path']}/{today}.md", "w+").write(md_text)
+
+
 
 if __name__ == "__main__":
-    report = SellReport("sell.csv")
+    report = SellReport("sell.csv", "config.json")
     report.initialize()
     report.report(1, 1, 1, 1)
     report.report(1, 2, 2, 2)
+    report.generate_day_report()

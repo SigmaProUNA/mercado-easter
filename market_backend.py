@@ -7,6 +7,7 @@ import json
 
 class Market():
     def __init__(self, config_path):
+        self.config_path = config_path
         self.config = json.load(open(config_path))
         self.db = database.Database(self.config['db_path'])
         self.db.initialize()
@@ -56,13 +57,14 @@ class Market():
             self.db.prod_stock_update(transaction['prod_id'], transaction["prod"]["stock"] - transaction["quantity"])
         
         # Adiciona a venda no CSV
-        csv = report.SellReport(self.config['sell_csv_path'])
+        csv = report.SellReport(self.config['sell_csv_path'], self.config_path)
         csv.initialize()
         for transaction in self.current_transaction:
             csv.report(transaction['prod_id'], transaction['quantity'], transaction['total_sold'], transaction['total_profit'])
 
         # Finalizar a transação
         self.current_transaction = []
+
 
 if __name__ == "__main__":
     market = Market("config.json")
