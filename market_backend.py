@@ -62,7 +62,11 @@ class Market():
     def finish_transaction(self):
         # Primeiro, atualizar o estoque
         for transaction in self.current_transaction:
-            self.db.prod_stock_update(transaction['prod_id'], transaction["prod"]["stock"] - transaction["quantity"])
+            stock = transaction["prod"]["stock"] - transaction["quantity"]
+            if stock < 0:
+                raise exceptions.NotEnoughItemsException(f"Quantidade insuficiente no estoque de {transaction['prod']['name']}")
+            
+            self.db.prod_stock_update(transaction['prod_id'], stock)
         
         # Adiciona a venda no CSV
         for transaction in self.current_transaction:
