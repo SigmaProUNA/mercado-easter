@@ -1,11 +1,12 @@
 import os
 import finances
+import database
 import datetime
 import json
 
 # Classe para reportar vendas no arquivo de vendas em CSV
 class SellReport:
-    def __init__(self, path: str, config: str):
+    def __init__(self, path: str, config: str, db: database.Database):
         self.path = path
         self.delimiter = ";"
         self.header = ["id", "date", "prod_id", "quantity", "total_sold", "total_profit"]
@@ -18,6 +19,7 @@ class SellReport:
         self.datetime_format = "%Y-%m-%d"
         self.config = json.load(open(config, "r"))
         self.lang_dict = self.config["words"][self.config["selected_lang"]] # Lingua selecionada
+        self.db = db
     
 
     # Consegue o proximo id de venda
@@ -85,7 +87,7 @@ class SellReport:
         for line in csv:
             line = line.split(self.delimiter)
             
-            if line_index > 0 and line[self.date_index] == today:
+            if line_index > 0 and line[self.date_index] == today and len(line) > 1:
                 total_quantity += int(line[self.quantity_index])
                 total_sold += int(line[self.total_sold_index])
                 total_profit += int(line[self.total_profit_index])
@@ -97,7 +99,22 @@ class SellReport:
         md_text += f"| {self.lang_dict['quantity_sold']} | {total_quantity} |\n"
         md_text += f"| {self.lang_dict['total_sold']} | {finances.cents_to_money(total_sold)} |\n"
         md_text += f"| {self.lang_dict['daily_profit']} | {finances.cents_to_money(total_profit)} |\n"
-
+        
+        # Sessão de ranking de produtos mais vendidos do dia
+        md_text += f"\n# {self.lang_dict['best_sellers']}\n"
+        
+        # Ranqueamento
+        prod_list = []
+        for line in csv:
+            line = line.split(self.delimiter)
+            if line[self.date_index] == today:
+                prod_id = int(line[self.prod_id_index])
+                prod_info = db.get_prod(prod_id)
+                prod_list.append([prod_info['name'], prod_id, line[self.quantity_index]])
+        
+        print(prod_list)
+                
+                
         # Salva o markdown
         os.makedirs(self.config['report_path'], exist_ok=True)
         open(f"{self.config['report_path']}/{today}.md", "w+").write(md_text)
@@ -105,7 +122,11 @@ class SellReport:
 
 
 if __name__ == "__main__":
-    report = SellReport("sell.csv", "config.json")
+    db = database.Database("database.db")
+    db.initialize()
+    db.set_profit(10)
+    db.add_prod("Teste", 100, 100)
+    report = SellReport("sell.csv", "config.json", db)
     report.initialize()
     report.report(1, 1, 1, 3)
     report.generate_day_report()

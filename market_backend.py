@@ -57,7 +57,7 @@ class Market():
             self.db.prod_stock_update(transaction['prod_id'], transaction["prod"]["stock"] - transaction["quantity"])
         
         # Adiciona a venda no CSV
-        csv = report.SellReport(self.config['sell_csv_path'], self.config_path)
+        csv = report.SellReport(self.config['sell_csv_path'], self.config_path, self.db)
         csv.initialize()
         for transaction in self.current_transaction:
             csv.report(transaction['prod_id'], transaction['quantity'], transaction['total_sold'], transaction['total_profit'])
