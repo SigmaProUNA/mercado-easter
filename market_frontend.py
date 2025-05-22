@@ -1,6 +1,7 @@
 import json
 import market_backend
 import finances
+import front_utils
 
 from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView
 from PyQt6.QtCore import Qt
@@ -15,6 +16,7 @@ class MarketWindow(QMainWindow):
         # Configurações
         self.config = json.loads(open(config, "r").read())
         self.lang_dict = self.config["words"][self.config["selected_lang"]]
+        front_utils.LANG_DICT = self.lang_dict # Definir a lingua do bagulho
         
 
         # Classe do backend
@@ -72,3 +74,6 @@ class MarketWindow(QMainWindow):
         self.central_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.central_widget)
 
+
+    def on_add_prod(self):
+        pass

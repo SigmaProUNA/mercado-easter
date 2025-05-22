@@ -22,7 +22,11 @@
             "search": "Pesquisar",
             "add_prod": "Adicionar",
             "rem_prod": "Remover",
-            "finish": "Finalizar"
+            "finish": "Finalizar",
+            "error": "Erro",
+            "warning": "Aviso",
+            "info": "Informação",
+            "confirmation": "Confirmação"
         }
     }
 }
