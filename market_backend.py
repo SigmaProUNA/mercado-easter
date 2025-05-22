@@ -1,6 +1,6 @@
 import database
 import finances
-import csv
+import report
 import exceptions
 import json
 
@@ -54,9 +54,13 @@ class Market():
         # Primeiro, atualizar o estoque
         for transaction in self.current_transaction:
             self.db.prod_stock_update(transaction['prod_id'], transaction["prod"]["stock"] - transaction["quantity"])
-    
         
-        
+        # Adiciona a venda no CSV
+        csv = report.SellReport(self.config['sell_csv_path'])
+        csv.initialize()
+        for transaction in self.current_transaction:
+            csv.report(transaction['prod_id'], transaction['quantity'], transaction['total_sold'], transaction['total_profit'])
+
 
 if __name__ == "__main__":
     market = Market("config.json")
