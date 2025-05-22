@@ -86,13 +86,17 @@ class SellReport:
         
         dates = []
         
+        filename = ""
         # Lista de datas para pegar
         if today_only:
             dates = [today]
+            filename = today
         else:
             for x in range(time_range):
                 dates.append((datetime.datetime.now() - datetime.timedelta(days=x)).strftime(self.datetime_format))
-                
+            
+            filename = f"{dates[-1]}_to_{dates[0]}"
+            
         print(dates)
               
         # Pegar os dados
@@ -118,12 +122,13 @@ class SellReport:
         
         # Ranqueamento
         prod_list = []
-        for line in csv:
-            line = line.split(self.delimiter)
-            if line[self.date_index] == today:
-                prod_id = int(line[self.prod_id_index])
-                prod_info = db.get_prod(prod_id)
-                prod_list.append([prod_info['name'], prod_id, line[self.quantity_index]])
+        for today in dates:
+            for line in csv:
+                line = line.split(self.delimiter)
+                if line[self.date_index] == today:
+                    prod_id = int(line[self.prod_id_index])
+                    prod_info = db.get_prod(prod_id)
+                    prod_list.append([prod_info['name'], prod_id, line[self.quantity_index]])
 
         # Juntar produtos com mesmo id 
         prod_list_copy = [x for x in prod_list]
@@ -145,19 +150,25 @@ class SellReport:
             
             if is_unique:
                 already_found.append(item)
+                
+            print(already_found)
+            print(prod_list_copy)
+            print(flush=True)
+
             
-        prod_list = [x for x in prod_list_copy]
+        prod_list = [x for x in already_found]
         prod_list.sort(key=lambda x: int(x[2]), reverse=True)
         
         # Adicionar no arquivo
         md_text += f"| {self.lang_dict['product']} | {self.lang_dict['quantity_sold']} |\n"
         
         for prod in prod_list:
+            print(prod, flush=True)
             md_text += f"| {prod[0]} | {prod[2]} |\n"
                 
         # Salva o markdown
         os.makedirs(self.config['report_path'], exist_ok=True)
-        open(f"{self.config['report_path']}/{today}.md", "w+").write(md_text)
+        open(f"{self.config['report_path']}/{filename}.md", "w+").write(md_text)
 
     # Função wrapper para evitar confusões... poderia ser feito manualmente.
     def generate_week_report(self):
@@ -173,3 +184,4 @@ if __name__ == "__main__":
     report.initialize()
     report.report(1, 1, 1, 3)
     report.generate_day_report()
+    report.generate_week_report()
