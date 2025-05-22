@@ -21,7 +21,8 @@ class SellReport:
                 line = line.replace("\n", "") # Tira \n no final
                 columns = line.split(self.delimiter)
 
-                sell_id = int(columns[self.id_index])
+                raw_id = columns[self.id_index]
+                sell_id = int(raw_id) if raw_id.isnumeric() else 0
                 if sell_id > highest:
                     highest = sell_id
 
@@ -58,3 +59,4 @@ if __name__ == "__main__":
     report = SellReport("sell.csv")
     report.initialize()
     report.report(1, 1, 1, 1)
+    report.report(1, 2, 2, 2)
