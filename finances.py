@@ -12,11 +12,17 @@ class Standards:
 
 # Converte centavos para dinheiro humano e retorna como float
 def cents_to_money(cents: int | str, money_unit: str = "R$", decimal_place: int = 2, separator_standard: str = Standards.BR_SEP) -> str:
-    cents = str(cents)[::-1] # Inverter a string
-    cents = cents[decimal_place:][::-1].zfill(1)  + separator_standard + cents[0:decimal_place][::-1].zfill(2) # Separar os centavos 
+    cents = str(cents)
     
-    return money_unit + " " + cents
-
+    money = ""
+    
+    # Inserir o separador
+    money = [c for c in cents]
+    separator_index = (len(cents)-decimal_place)
+    money.insert(separator_index, separator_standard)
+    
+    return money_unit + "".join(money)
+    
 
 # Consegue o valor de lucro
 def get_profit(profit_rate: float, base_price: float) -> float:
