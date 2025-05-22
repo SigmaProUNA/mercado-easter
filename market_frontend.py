@@ -22,15 +22,15 @@ class MarketWindow(QMainWindow):
         
         # Layouts para a UI
         self.layouts = {
-            "top_bar": QHBoxLayout(),
-            "pay_price": QVBoxLayout(),
-            "transaction": QHBoxLayout(),
-            "bottom_bar": QHBoxLayout()
+            "top_bar": [QHBoxLayout()],
+            "pay_price": [QVBoxLayout()],
+            "transaction": [QHBoxLayout()],
+            "bottom_bar": [QHBoxLayout()]
         }
         
         # Adicionar no central e já ir colocando widgets
         for key, val in self.layouts.items():
-            self.main_layout.addLayout(val)
+            self.main_layout.addLayout(val[0])
             
             # Lista de widgets
             widgets = []
@@ -61,7 +61,9 @@ class MarketWindow(QMainWindow):
                            QPushButton(f"{self.lang_dict['finish']}")]
                 
             for w in widgets:
-                val.addWidget(w)
+                val[0].addWidget(w)
+                
+            val.append(widgets)
             
         self.central_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.central_widget)
