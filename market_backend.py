@@ -4,6 +4,12 @@ import exceptions
 import json
 
 
+class REPORT_TYPES:
+    DAY = 1
+    WEEK = 2
+    ALL_TIME = 3
+
+
 class Market():
     def __init__(self, config_path):
         self.config_path = config_path
@@ -12,6 +18,9 @@ class Market():
         self.db.initialize()
         self.db.set_profit(self.config['profit'])
 
+        self.csv = report.SellReport(self.config['sell_csv_path'], self.config_path, self.db)
+        self.csv.initialize()
+        
         self.current_transaction = []
     
 
@@ -56,14 +65,28 @@ class Market():
             self.db.prod_stock_update(transaction['prod_id'], transaction["prod"]["stock"] - transaction["quantity"])
         
         # Adiciona a venda no CSV
-        csv = report.SellReport(self.config['sell_csv_path'], self.config_path, self.db)
-        csv.initialize()
         for transaction in self.current_transaction:
-            csv.report(transaction['prod_id'], transaction['quantity'], transaction['total_sold'], transaction['total_profit'])
+            self.csv.report(transaction['prod_id'], transaction['quantity'], transaction['total_sold'], transaction['total_profit'])
 
         # Finalizar a transação
         self.current_transaction = []
-
+        
+    
+    # Gerar o relatório
+    def generate_report(self, tp: int):
+        file = ""
+        
+        if tp == REPORT_TYPES.DAY:
+            file = self.csv.generate_day_report()
+        elif tp == REPORT_TYPES.WEEK:
+            file = self.csv.generate_week_report()
+        elif tp == REPORT_TYPES.ALL_TIME:
+            file = self.csv.generate_all_time_report()
+        else:
+            raise Exception(f"Invalid report type. Use a variable from REPORT_TYPES class.")
+        
+        return file
+        
 
 if __name__ == "__main__":
     market = Market("config.json")
@@ -72,4 +95,8 @@ if __name__ == "__main__":
     market.sell(3, 10)
     print(market.current_transaction)
     market.finish_transaction()
-
+    files = [
+        market.generate_report(REPORT_TYPES.DAY),
+        market.generate_report(REPORT_TYPES.WEEK),
+        market.generate_report(REPORT_TYPES.ALL_TIME)
+    ]

@@ -131,7 +131,7 @@ class SellReport:
                 line = line.split(self.delimiter)
                 if line[self.date_index] == today:
                     prod_id = int(line[self.prod_id_index])
-                    prod_info = db.get_prod(prod_id)
+                    prod_info = self.db.get_prod(prod_id)
                     prod_list.append([prod_info['name'], prod_id, line[self.quantity_index]])
 
         # Juntar produtos com mesmo id 
