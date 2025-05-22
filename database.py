@@ -129,11 +129,4 @@ class Database:
         
         
 if __name__ == "__main__":
-    db = Database("database.db")
-    db.initialize()
-    db.set_profit(10)
-    prod_id = db.add_prod("Teste", 100, 100)
-    db.update_price(prod_id, 200)
-    db.update_name(prod_id, "Teste 2")
-    print(db.get_prod(prod_id))
-    db.remove_prod(prod_id)
+    pass

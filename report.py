@@ -100,8 +100,7 @@ class SellReport:
                 dates.append((datetime.datetime.now() - datetime.timedelta(days=x)).strftime(self.datetime_format))
             
             filename = f"{dates[-1]}_to_{dates[0]}"
-            
-        print(dates)
+
               
         # Pegar os dados
         for today in dates:
@@ -155,11 +154,6 @@ class SellReport:
             if is_unique:
                 already_found.append(item)
                 
-            print(already_found)
-            print(prod_list_copy)
-            print(flush=True)
-
-            
         prod_list = [x for x in already_found]
         prod_list.sort(key=lambda x: int(x[2]), reverse=True)
         
@@ -167,7 +161,6 @@ class SellReport:
         md_text += f"| {self.lang_dict['product']} | {self.lang_dict['quantity_sold']} |\n"
         
         for prod in prod_list:
-            print(prod, flush=True)
             md_text += f"| {prod[0]} | {prod[2]} |\n"
                 
         # Salva o markdown
@@ -188,13 +181,4 @@ class SellReport:
 
 
 if __name__ == "__main__":
-    db = database.Database("database.db")
-    db.initialize()
-    db.set_profit(10)
-    db.add_prod("Teste", 100, 100)
-    report = SellReport("sell.csv", "config.json", db)
-    report.initialize()
-    report.report(1, 1, 1, 3)
-    report.generate_day_report()
-    report.generate_week_report()
-    report.generate_all_time_report()
+    pass

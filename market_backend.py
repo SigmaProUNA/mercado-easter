@@ -26,7 +26,7 @@ class Market():
 
     def generate_testing_data(self):
         for x in range(100):
-            self.db.add_prod(f"Produto {x}", 10000, 100)
+            self.db.add_prod(f"Produto {x}", 10000, 10000000)
 
     # Vender produto
     def sell(self, prod_id, quantity):
@@ -93,14 +93,4 @@ class Market():
         
 
 if __name__ == "__main__":
-    market = Market("config.json")
-    market.generate_testing_data()
-    market.sell(2, 10)
-    market.sell(3, 10)
-    print(market.current_transaction)
-    market.finish_transaction()
-    files = [
-        market.generate_report(REPORT_TYPES.DAY),
-        market.generate_report(REPORT_TYPES.WEEK),
-        market.generate_report(REPORT_TYPES.ALL_TIME)
-    ]
+    pass

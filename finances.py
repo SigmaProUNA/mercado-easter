@@ -49,5 +49,5 @@ def add_profit(profit_rate: float, base_price: float) -> float:
 
 
 if __name__ == "__main__":
-    print(cents_to_money(1000))
+    pass
     
