@@ -1,5 +1,4 @@
 import database
-import finances
 import report
 import exceptions
 import json

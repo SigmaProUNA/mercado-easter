@@ -172,16 +172,19 @@ class SellReport:
                 
         # Salva o markdown
         os.makedirs(self.config['report_path'], exist_ok=True)
-        open(f"{self.config['report_path']}/{filename}.md", "w+").write(md_text)
+        full_path = os.path.join(self.config['report_path'], f"{filename}.md") #f"{self.config['report_path']}/{filename}.md"
+        open(full_path, "w+").write(md_text)
+        
+        return full_path
 
     # Função wrapper para evitar confusões... poderia ser feito manualmente.
     def generate_week_report(self):
-        self.generate_day_report(False, 7)
+        return self.generate_day_report(False, 7)
         
     
     # Função wrapper para todos os tempos...
     def generate_all_time_report(self):
-        self.generate_day_report(False, since_epoch=True)
+        return self.generate_day_report(False, since_epoch=True)
 
 
 if __name__ == "__main__":
