@@ -42,32 +42,36 @@ class MarketWindow(QMainWindow):
             widgets = []
             
             if key == "top_bar":
-                widgets = [QLabel("Easter"),
-                QPushButton(f"{self.lang_dict['gen_report']}"),
-                QPushButton(f"{self.lang_dict['db_edit']}")]
+                widgets = [[QLabel("Easter")],
+                [QPushButton(f"{self.lang_dict['gen_report']}")],
+                [QPushButton(f"{self.lang_dict['db_edit']}")]]
                 
                 # Negrito no label 0
-                widgets[0].setStyleSheet("font-weight: bold;")
+                widgets[0][0].setStyleSheet("font-weight: bold;")
             elif key == "pay_price":
-                widgets = [
-                    QLabel(f"{self.lang_dict['total_sold']}:"),
-                    QLabel(finances.cents_to_money(0, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
+                widgets = [[
+                    QLabel(f"{self.lang_dict['total_sold']}:")],
+                    [QLabel(finances.cents_to_money(0, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))]
                 ]
                 
                 for w in widgets:
                     # Editar o widget para deixar negrito
-                    w.setStyleSheet("font-weight: bold; font-size: 20px")
-                    w.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                    w[0].setStyleSheet("font-weight: bold; font-size: 20px")
+                    w[0].setAlignment(Qt.AlignmentFlag.AlignCenter)
             elif key == "transaction":
-                widgets = [QTableView()]
+                widgets = [[QTableView()]]
             elif key == "bottom_bar":
-                widgets = [QPushButton(f"{self.lang_dict['search']}"),
-                           QPushButton(f"{self.lang_dict['add_prod']}"),
-                           QPushButton(f"{self.lang_dict['rem_prod']}"),
-                           QPushButton(f"{self.lang_dict['finish']}")]
+                widgets = [[QPushButton(f"{self.lang_dict['search']}")],
+                           [QPushButton(f"{self.lang_dict['add_prod']}"), self.on_add_prod],
+                           [QPushButton(f"{self.lang_dict['rem_prod']}")],
+                           [QPushButton(f"{self.lang_dict['finish']}")]]
                 
             for w in widgets:
-                val[0].addWidget(w)
+                val[0].addWidget(w[0])
+
+                if len(w) > 1:
+                    if isinstance(w[0], QPushButton):
+                        w[0].clicked.connect(w[1])
                 
             val.append(widgets)
             
@@ -76,4 +80,4 @@ class MarketWindow(QMainWindow):
 
 
     def on_add_prod(self):
-        pass
+        front_utils.message(1, "teste")
