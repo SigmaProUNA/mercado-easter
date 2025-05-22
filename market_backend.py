@@ -61,11 +61,14 @@ class Market():
         for transaction in self.current_transaction:
             csv.report(transaction['prod_id'], transaction['quantity'], transaction['total_sold'], transaction['total_profit'])
 
+        # Finalizar a transação
+        self.current_transaction = []
 
 if __name__ == "__main__":
     market = Market("config.json")
     market.generate_testing_data()
     market.sell(2, 10)
+    market.sell(3, 10)
     print(market.current_transaction)
     market.finish_transaction()
 
