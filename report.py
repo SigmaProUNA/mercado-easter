@@ -10,6 +10,8 @@ class SellReport:
         self.delimiter = ";"
         self.header = ["id", "date", "prod_id", "quantity", "total_sold", "total_profit"]
         self.id_index = 0 # O index responsável pelo id
+        self.date_index = 1
+        self.prod_id_index = 2
         self.quantity_index = 3
         self.total_sold_index = 4
         self.total_profit_index = 5
@@ -81,9 +83,9 @@ class SellReport:
 
         # Pegar os dados
         for line in csv:
-            if line_index > 0:
-                line = line.split(self.delimiter)
-                
+            line = line.split(self.delimiter)
+            
+            if line_index > 0 and line[self.date_index] == today:
                 total_quantity += int(line[self.quantity_index])
                 total_sold += int(line[self.total_sold_index])
                 total_profit += int(line[self.total_profit_index])
