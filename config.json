@@ -4,6 +4,9 @@
     "report_path": "report",
     "profit": 30,
     "selected_lang": "ptbr",
+    "money_unit": "R$",
+    "decimal_place": 2,
+    "separator": ",",
     "words": {
         "ptbr": {
             "sellings": "Vendas",

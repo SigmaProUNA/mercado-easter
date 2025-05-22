@@ -1,4 +1,6 @@
 import market_backend
+import finances
+
 from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView
 from PyQt6.QtCore import Qt
 
@@ -37,11 +39,19 @@ class MarketWindow(QMainWindow):
                 widgets = [QLabel("Easter"),
                 QPushButton(f"{self.lang_dict['gen_report']}"),
                 QPushButton(f"{self.lang_dict['db_edit']}")]
+                
+                # Negrito no label 0
+                widgets[0].setStyleSheet("font-weight: bold;")
             elif key == "pay_price":
                 widgets = [
                     QLabel(f"{self.lang_dict['total_sold']}:"),
-                    QLabel("0")
+                    QLabel(finances.cents_to_money(0, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
                 ]
+                
+                for w in widgets:
+                    # Editar o widget para deixar negrito
+                    w.setStyleSheet("font-weight: bold; font-size: 20px")
+                    w.setAlignment(Qt.AlignmentFlag.AlignCenter)
             elif key == "transaction":
                 widgets = [QTableView()]
             elif key == "bottom_bar":
