@@ -67,8 +67,12 @@ class SellReport:
 
     
     # Gerar o report de lucro e produtos mais vendidos no dia
-    def generate_day_report(self, today_only: bool = True, time_range: int = 7):
-    
+    def generate_day_report(self, today_only: bool = True, time_range: int = 7, since_epoch: bool = False):
+        
+        # SObreescrever o range se since_epoch
+        if since_epoch:
+            time_range = round(datetime.datetime.now().timestamp() / 86400) # para dias
+        
         md_text = "" # O report será feito em markdown
         today = datetime.datetime.now().strftime(self.datetime_format) if today_only else None # Só do dia aatual caso today
         csv = [x.strip().replace("\n", "") for x in open(self.path, "r").readlines()] # CSV
@@ -173,6 +177,11 @@ class SellReport:
     # Função wrapper para evitar confusões... poderia ser feito manualmente.
     def generate_week_report(self):
         self.generate_day_report(False, 7)
+        
+    
+    # Função wrapper para todos os tempos...
+    def generate_all_time_report(self):
+        self.generate_day_report(False, since_epoch=True)
 
 
 if __name__ == "__main__":
@@ -185,3 +194,4 @@ if __name__ == "__main__":
     report.report(1, 1, 1, 3)
     report.generate_day_report()
     report.generate_week_report()
+    report.generate_all_time_report()
