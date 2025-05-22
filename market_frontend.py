@@ -1,3 +1,4 @@
+import json
 import market_backend
 import finances
 
@@ -7,15 +8,18 @@ from PyQt6.QtCore import Qt
 
 # Front end
 class MarketWindow(QMainWindow):
-    def __init__(self, config: dict):
+    def __init__(self, config: str):
         super().__init__()
         self.setWindowTitle("Easter")
-        self.setGeometry(100, 100, 400, 300)  # x, y, width, height
         
         # Configurações
-        self.config = config
+        self.config = json.loads(open(config, "r").read())
         self.lang_dict = self.config["words"][self.config["selected_lang"]]
         
+
+        # Classe do backend
+        self.backend = market_backend.Market(config)
+
         # Widget central
         self.central_widget = QWidget()
         self.main_layout = QVBoxLayout(self.central_widget)

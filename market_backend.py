@@ -74,7 +74,11 @@ class Market():
 
         # Finalizar a transação
         self.current_transaction = []
-        
+    
+
+    def get_transaction_content(self):
+        return self.current_transaction
+
     
     # Gerar o relatório
     def generate_report(self, tp: int):

@@ -6,7 +6,7 @@ import json
 
 def main():
     app = QApplication(sys.argv)
-    window = market_frontend.MarketWindow(json.load(open("config.json")))
+    window = market_frontend.MarketWindow("config.json")
     window.show()
     sys.exit(app.exec())
 
