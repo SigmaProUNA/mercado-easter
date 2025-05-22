@@ -21,7 +21,7 @@ def cents_to_money(cents: int | str, money_unit: str = "R$", decimal_place: int 
     separator_index = (len(cents)-decimal_place)
     money.insert(separator_index, separator_standard)
     
-    return money_unit + "".join(money)
+    return money_unit + " " + "".join(money)
     
 
 # Consegue o valor de lucro
