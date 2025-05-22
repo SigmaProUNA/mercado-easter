@@ -66,12 +66,35 @@ class SellReport:
     def generate_day_report(self):
         md_text = "" # O report será feito em markdown
         today = datetime.datetime.now().strftime(self.datetime_format)
+        csv = [x.strip().replace("\n", "") for x in open(self.path, "r").readlines()] # CSV
 
-        # Primeiro, calcular a venda e o lucro total do dia
+
+        # TAbela de vendas
         md_text += f"# {self.lang_dict['sellings']}\n"
         md_text += f"| {self.lang_dict['data']}    | {self.lang_dict['value']} |\n"
         
-        # Total de venda
+        total_quantity = 0
+        total_sold = 0
+        total_profit = 0
+
+        line_index = 0
+
+        # Pegar os dados
+        for line in csv:
+            if line_index > 0:
+                line = line.split(self.delimiter)
+                
+                total_quantity += int(line[self.quantity_index])
+                total_sold += int(line[self.total_sold_index])
+                total_profit += int(line[self.total_profit_index])
+
+            line_index += 1
+
+
+        # Adicionar na tabela
+        md_text += f"| {self.lang_dict['quantity_sold']} | {total_quantity} |\n"
+        md_text += f"| {self.lang_dict['total_sold']} | {finances.cents_to_money(total_sold)} |\n"
+        md_text += f"| {self.lang_dict['daily_profit']} | {finances.cents_to_money(total_profit)} |\n"
 
         # Salva o markdown
         os.makedirs(self.config['report_path'], exist_ok=True)

@@ -13,9 +13,9 @@ class Standards:
 # Converte centavos para dinheiro humano e retorna como float
 def cents_to_money(cents: int | str, money_unit: str = "R$", decimal_place: int = 2, separator_standard: str = Standards.BR_SEP) -> str:
     cents = str(cents)[::-1] # Inverter a string
-    cents = cents[0:decimal_place] + separator_standard + cents[decimal_place:]# Separar os centavos 
+    cents = cents[decimal_place:][::-1].zfill(1)  + separator_standard + cents[0:decimal_place][::-1].zfill(2) # Separar os centavos 
     
-    return money_unit + " " + cents[::-1]
+    return money_unit + " " + cents
 
 
 # Consegue o valor de lucro

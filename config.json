@@ -8,7 +8,10 @@
         "ptbr": {
             "sellings": "Vendas",
             "data": "Dado",
-            "value": "Valor"
+            "value": "Valor",
+            "quantity_sold": "Quantidade vendida",
+            "total_sold": "Venda total",
+            "daily_profit": "Lucro do dia"
         }
     }
 }
