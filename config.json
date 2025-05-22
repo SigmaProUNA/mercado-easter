@@ -12,7 +12,8 @@
             "quantity_sold": "Quantidade vendida",
             "total_sold": "Venda total",
             "daily_profit": "Lucro do dia",
-            "best_sellers": "Mais vendidos"
+            "best_sellers": "Mais vendidos",
+            "product": "Produto"
         }
     }
 }

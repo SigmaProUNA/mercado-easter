@@ -111,9 +111,36 @@ class SellReport:
                 prod_id = int(line[self.prod_id_index])
                 prod_info = db.get_prod(prod_id)
                 prod_list.append([prod_info['name'], prod_id, line[self.quantity_index]])
+
+        # Juntar produtos com mesmo id 
+        prod_list_copy = [x for x in prod_list]
+        already_found = []
+        for item in prod_list:
+            is_unique = True # Se é unico
+            
+            # Se a lista ta vazia, tem nada então nem tem por que iterae
+            if len(already_found) <= 0:
+                already_found.append(item)
+                continue
+            
+            for found in already_found:
+                if found[1] == item[1]:
+                    found[2] = int(found[2]) + int(item[2])
+                    prod_list_copy.remove(item)
+                    is_unique = False
+                    break
+            
+            if is_unique:
+                already_found.append(item)
+            
+        prod_list = [x for x in prod_list_copy]
+        prod_list.sort(key=lambda x: int(x[2]), reverse=True)
         
-        print(prod_list)
-                
+        # Adicionar no arquivo
+        md_text += f"| {self.lang_dict['product']} | {self.lang_dict['quantity_sold']} |\n"
+        
+        for prod in prod_list:
+            md_text += f"| {prod[0]} | {prod[2]} |\n"
                 
         # Salva o markdown
         os.makedirs(self.config['report_path'], exist_ok=True)
