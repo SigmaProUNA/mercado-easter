@@ -13,7 +13,13 @@
             "total_sold": "Venda total",
             "daily_profit": "Lucro",
             "best_sellers": "Mais vendidos",
-            "product": "Produto"
+            "product": "Produto",
+            "gen_report": "Gerar relatório",
+            "db_edit": "Editar produtos",
+            "search": "Pesquisar",
+            "add_prod": "Adicionar",
+            "rem_prod": "Remover",
+            "finish": "Finalizar"
         }
     }
 }
