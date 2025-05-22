@@ -67,9 +67,10 @@ class SellReport:
 
     
     # Gerar o report de lucro e produtos mais vendidos no dia
-    def generate_day_report(self):
+    def generate_day_report(self, today_only: bool = True, time_range: int = 7):
+    
         md_text = "" # O report será feito em markdown
-        today = datetime.datetime.now().strftime(self.datetime_format)
+        today = datetime.datetime.now().strftime(self.datetime_format) if today_only else None # Só do dia aatual caso today
         csv = [x.strip().replace("\n", "") for x in open(self.path, "r").readlines()] # CSV
 
 
@@ -81,18 +82,30 @@ class SellReport:
         total_sold = 0
         total_profit = 0
 
-        line_index = 0
-
+        line_index = 0  
+        
+        dates = []
+        
+        # Lista de datas para pegar
+        if today_only:
+            dates = [today]
+        else:
+            for x in range(time_range):
+                dates.append((datetime.datetime.now() - datetime.timedelta(days=x)).strftime(self.datetime_format))
+                
+        print(dates)
+              
         # Pegar os dados
-        for line in csv:
-            line = line.split(self.delimiter)
-            
-            if line_index > 0 and line[self.date_index] == today and len(line) > 1:
-                total_quantity += int(line[self.quantity_index])
-                total_sold += int(line[self.total_sold_index])
-                total_profit += int(line[self.total_profit_index])
+        for today in dates:
+            for line in csv:
+                line = line.split(self.delimiter)
+                
+                if line_index > 0 and line[self.date_index] == today and len(line) > 1:
+                    total_quantity += int(line[self.quantity_index])
+                    total_sold += int(line[self.total_sold_index])
+                    total_profit += int(line[self.total_profit_index])
 
-            line_index += 1
+                line_index += 1
 
 
         # Adicionar na tabela
@@ -146,6 +159,9 @@ class SellReport:
         os.makedirs(self.config['report_path'], exist_ok=True)
         open(f"{self.config['report_path']}/{today}.md", "w+").write(md_text)
 
+    # Função wrapper para evitar confusões... poderia ser feito manualmente.
+    def generate_week_report(self):
+        self.generate_day_report(False, 7)
 
 
 if __name__ == "__main__":
