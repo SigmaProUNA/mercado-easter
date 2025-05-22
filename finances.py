@@ -20,9 +20,23 @@ def cents_to_money(cents: int | str, money_unit: str = "R$", decimal_place: int 
     money = [c for c in cents]
     separator_index = (len(cents)-decimal_place)
     money.insert(separator_index, separator_standard)
+    money = "".join(money)
     
-    return money_unit + " " + "".join(money)
+    # Adicionar zeros 
+    integer_part, cent_part = money.split(separator_standard)
+    money = integer_part.zfill(1) + separator_standard 
     
+    if len(cents) == 1:
+        cent_part = "0" + cent_part
+    elif len(cents) == 0:
+        cent_part = "00"
+        
+    if len(cent_part) < decimal_place:
+        cent_part += "0" * (decimal_place - len(cent_part))
+    
+    money += cent_part
+    
+    return money_unit + " " + money
 
 # Consegue o valor de lucro
 def get_profit(profit_rate: float, base_price: float) -> float:

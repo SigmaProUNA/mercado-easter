@@ -107,6 +107,5 @@ class SellReport:
 if __name__ == "__main__":
     report = SellReport("sell.csv", "config.json")
     report.initialize()
-    report.report(1, 1, 1, 1)
-    report.report(1, 2, 2, 2)
+    report.report(1, 1, 1, 3)
     report.generate_day_report()
