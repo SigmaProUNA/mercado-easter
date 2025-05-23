@@ -63,7 +63,7 @@ class MarketWindow(QMainWindow):
                     w[0].setStyleSheet("font-weight: bold; font-size: 20px")
                     w[0].setAlignment(Qt.AlignmentFlag.AlignCenter)
             elif key == "transaction":
-                widgets = [[QTableView(), [self.lang_dict["id"], self.lang_dict["product"], self.lang_dict["quantity"], self.lang_dict["price"]], QStandardItemModel()]]
+                widgets = [[QTableView(), [self.lang_dict["id"], self.lang_dict["item_id"], self.lang_dict["product"], self.lang_dict["quantity"], self.lang_dict["price"]], QStandardItemModel()]]
 
                 # Adicionar header da tabela
                 for w in widgets:
@@ -128,7 +128,7 @@ class MarketWindow(QMainWindow):
             
             
             # Adicionar na linha a transação
-            data = [transaction["prod_id"], transaction["name"], transaction["quantity"], finances.cents_to_money(transaction["total_sold"], self.config["money_unit"], self.config["decimal_place"], self.config["separator"])]
+            data = [transaction["prod_id"], transaction["item_id"], transaction["name"], transaction["quantity"], finances.cents_to_money(transaction["total_sold"], self.config["money_unit"], self.config["decimal_place"], self.config["separator"])]
             for col in range(column_num):
                 model.setData(model.index(row, col), data[col])
                 

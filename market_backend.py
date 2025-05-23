@@ -22,6 +22,7 @@ class Market():
         self.csv.initialize()
         
         self.current_transaction = []
+        self.item_id = 0 # Para facilitar encontrar transações especificas para realizar uma ação
     
 
     def generate_testing_data(self):
@@ -30,6 +31,7 @@ class Market():
 
     # Vender produto
     def sell(self, prod_id, quantity):
+        self.item_id += 1
         product = self.db.get_prod(prod_id)
 
         if not product:
@@ -56,7 +58,8 @@ class Market():
                     "name": product['name'],
                     "quantity": quantity,
                     "total_sold": product['price'] * quantity,
-                    "total_profit": product['profit'] * quantity
+                    "total_profit": product['profit'] * quantity,
+                    "item_id": self.item_id
                 }
                 self.current_transaction.append(transaction)
                 
@@ -78,6 +81,7 @@ class Market():
 
         # Finalizar a transação
         self.current_transaction = []
+        self.item_id = 0
     
 
     def get_transaction_content(self):
