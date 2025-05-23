@@ -3,6 +3,7 @@ import market_backend
 import finances
 import front_utils
 import fastmath
+import exceptions
 
 from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView
 from PyQt6.QtCore import Qt
@@ -14,6 +15,7 @@ class MarketWindow(QMainWindow):
     def __init__(self, config: str):
         super().__init__()
         self.setWindowTitle("Easter")
+        self.setMinimumSize(600, 400)
         
         # Configurações
         self.config = json.loads(open(config, "r").read())
@@ -96,3 +98,30 @@ class MarketWindow(QMainWindow):
         prod_id = front_utils.ask_input(self.lang_dict["ask_id_desc"], self.lang_dict["ask_id_title"], input_type=int)
         quanitity = front_utils.ask_input(self.lang_dict["ask_quantity_desc"], self.lang_dict["ask_quantity_title"], input_type=int)        
         
+        # Checa se o input não é vazio, se não for, continua
+        if prod_id != "" and quanitity != "":
+            try:
+                transaction = self.backend.sell(int(prod_id), int(quanitity))
+            except exceptions.ProdNotFoundException:
+                front_utils.message(2, f"{self.lang_dict['prod_not_found']} {prod_id}")
+                return
+            
+            # Adicionar a tabela
+            table = self.layouts["transaction"][1][0]
+            
+            model = table[2]
+            row_num = model.rowCount()
+            column_num = model.columnCount()
+            
+            # Conseguir a proxima linha
+            row = 0
+            for row in range(row_num):
+                if model.data(model.index(row, 0)) is None or model.data(model.index(row, 0)) == "":
+                    break
+            
+            
+            # Adicionar na linha a transação
+            data = [transaction["prod_id"], transaction["name"], transaction["quantity"], finances.cents_to_money(transaction["total_sold"], self.config["money_unit"], self.config["decimal_place"], self.config["separator"])]
+            for col in range(column_num):
+                model.setData(model.index(row, col), data[col])
+            

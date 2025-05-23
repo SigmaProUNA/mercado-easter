@@ -53,6 +53,7 @@ class Market():
                 transaction = {
                     "prod": product,
                     "prod_id": product['id'],
+                    "name": product['name'],
                     "quantity": quantity,
                     "total_sold": product['price'] * quantity,
                     "total_profit": product['profit'] * quantity

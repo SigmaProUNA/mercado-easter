@@ -34,7 +34,8 @@
             "price": "Preço",
             "ask_quantity_title": "Quantidade",
             "ask_quantity_desc": "Digite a quantidade.",
-            "invalid_type_int": "Valor inválido. Deve ser um número inteiro."
+            "invalid_type_int": "Valor inválido. Deve ser um número inteiro.",
+            "prod_not_found": "Produto não encontrado."
         }
     }
 }
