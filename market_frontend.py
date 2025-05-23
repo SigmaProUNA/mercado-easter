@@ -5,6 +5,7 @@ import front_utils
 
 from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
 
 
 # Front end
@@ -59,7 +60,17 @@ class MarketWindow(QMainWindow):
                     w[0].setStyleSheet("font-weight: bold; font-size: 20px")
                     w[0].setAlignment(Qt.AlignmentFlag.AlignCenter)
             elif key == "transaction":
-                widgets = [[QTableView()]]
+                widgets = [[QTableView(), [self.lang_dict["id"], self.lang_dict["product"], self.lang_dict["quantity"], self.lang_dict["price"]], QStandardItemModel()]]
+
+                # Adicionar header da tabela
+                for w in widgets:
+                    if isinstance(w[0], QTableView):
+                        w[2].setColumnCount(len(w[1]))
+                        w[2].setRowCount(100)
+                        w[2].setHorizontalHeaderLabels(w[1])
+                        w[0].setModel(w[2])
+                            
+            
             elif key == "bottom_bar":
                 widgets = [[QPushButton(f"{self.lang_dict['search']}")],
                            [QPushButton(f"{self.lang_dict['add_prod']}"), self.on_add_prod],

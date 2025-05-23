@@ -50,13 +50,16 @@ class Market():
                 '''
 
 
-                self.current_transaction.append({
+                transaction = {
                     "prod": product,
                     "prod_id": product['id'],
                     "quantity": quantity,
                     "total_sold": product['price'] * quantity,
                     "total_profit": product['profit'] * quantity
-                })
+                }
+                self.current_transaction.append(transaction)
+                
+                return transaction
 
 
     def finish_transaction(self):

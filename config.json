@@ -28,7 +28,10 @@
             "info": "Informação",
             "confirmation": "Confirmação",
             "ask_id_title": "ID do produto",
-            "ask_id_desc": "Digite o ID do produto."
+            "ask_id_desc": "Digite o ID do produto.",
+            "id" : "ID",
+            "quantity": "Quantidade",
+            "price": "Preço"
         }
     }
 }
