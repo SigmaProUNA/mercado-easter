@@ -1,7 +1,6 @@
 import market_frontend
 import sys
 from PyQt6.QtWidgets import QApplication
-import json
 
 
 def main():

@@ -80,7 +80,8 @@ class SellReport:
 
         # TAbela de vendas
         md_text += f"# {self.lang_dict['sellings']}\n"
-        md_text += f"| {self.lang_dict['data']}    | {self.lang_dict['value']} |\n"
+        md_text += f"| {self.lang_dict['data']} | {self.lang_dict['value']} |\n"
+        md_text += f"| --- | --- |\n"
         
         total_quantity = 0
         total_sold = 0
@@ -159,6 +160,7 @@ class SellReport:
         
         # Adicionar no arquivo
         md_text += f"| {self.lang_dict['product']} | {self.lang_dict['quantity_sold']} |\n"
+        md_text += f"| --- | --- |\n"
         
         for prod in prod_list:
             md_text += f"| {prod[0]} | {prod[2]} |\n"

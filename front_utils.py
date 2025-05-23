@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMessageBox, QHBoxLayout, QVBoxLayout, QInputDialog, QTableView, QDialog, QLabel, QPushButton
+from PyQt6.QtWidgets import QMessageBox, QHBoxLayout, QVBoxLayout, QInputDialog, QTableView, QDialog, QLabel, QPushButton, QTextEdit
 from PyQt6.QtGui import QStandardItemModel
 import fastmath
 
@@ -98,3 +98,21 @@ def table_dialog(title: str, label: str, headers: list, content: list[list]):
     dialog.setLayout(dialog_layout)
     dialog.exec()
     
+
+# Exibe texto markdown
+def show_markdown(text: str, title: str):
+    dialog = QDialog()
+    dialog.setWindowTitle(title)
+    
+    layout = QVBoxLayout()
+    text_edit = QTextEdit()
+    close_button = QPushButton(LANG_DICT["close"])
+    close_button.clicked.connect(dialog.close)
+    
+    text_edit.setMarkdown(text)
+    layout.addWidget(text_edit)
+    layout.addWidget(close_button)
+    
+    dialog.setLayout(layout)
+    dialog.exec()
+

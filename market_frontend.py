@@ -234,6 +234,8 @@ class MarketWindow(QMainWindow):
     def on_generate(self):
         choice = self.report_combobox.currentIndex()
         
-        report = self.backend.generate_report(choice)
-        print(report)
+        report = open(self.backend.generate_report(choice), "r").read()
+        
+        front_utils.show_markdown(report, self.lang_dict["report_title"])
+        
         

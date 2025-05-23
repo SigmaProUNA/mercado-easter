@@ -49,7 +49,8 @@
             "search_res_desc": "Resultados da pesquisa",
             "daily": "Diário",
             "weekly": "Semanal",
-            "all_time": "De sempre"
+            "all_time": "De sempre",
+            "report_title": "Relatório"
         }
     }
 }
