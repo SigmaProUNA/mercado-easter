@@ -69,7 +69,7 @@ class MarketWindow(QMainWindow):
                 for w in widgets:
                     if isinstance(w[0], QTableView):
                         w[2].setColumnCount(len(w[1]))
-                        w[2].setRowCount(100)
+                        w[2].setRowCount(1)
                         w[2].setHorizontalHeaderLabels(w[1])
                         w[0].setModel(w[2])
                             
@@ -132,7 +132,9 @@ class MarketWindow(QMainWindow):
                 if model.data(model.index(row, 0)) is None or model.data(model.index(row, 0)) == "":
                     break
             
-            
+            if row == row_num-1:
+                model.insertRow(row_num)
+                
             # Adicionar na linha a transação
             data = [transaction["prod_id"], transaction["item_id"], transaction["name"], transaction["quantity"], finances.cents_to_money(transaction["total_sold"], self.config["money_unit"], self.config["decimal_place"], self.config["separator"])]
             for col in range(column_num):
