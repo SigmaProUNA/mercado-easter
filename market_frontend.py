@@ -77,7 +77,7 @@ class MarketWindow(QMainWindow):
             elif key == "bottom_bar":
                 widgets = [[QPushButton(f"{self.lang_dict['search']}")],
                            [QPushButton(f"{self.lang_dict['add_prod']}"), self.on_add_prod],
-                           [QPushButton(f"{self.lang_dict['rem_prod']}")],
+                           [QPushButton(f"{self.lang_dict['rem_prod']}"), self.on_rem_prod],
                            [QPushButton(f"{self.lang_dict['finish']}")]]
                 
             for w in widgets:
@@ -99,6 +99,10 @@ class MarketWindow(QMainWindow):
     def __init_vars__(self):
         self.cents_total = 0
         self.price_label = self.layouts["pay_price"][1][1][0]
+        self.table = self.layouts["transaction"][1][0]
+        self.table_model = self.table[2]
+        self.item_id_index = 1
+        self.cents_per_row = [] # Armazenar o valor original de centavos para linha
 
     # Adicionar produto na transação
     def on_add_prod(self):
@@ -110,13 +114,12 @@ class MarketWindow(QMainWindow):
             try:
                 transaction = self.backend.sell(int(prod_id), int(quanitity))
             except exceptions.ProdNotFoundException:
-                front_utils.message(2, f"{self.lang_dict['prod_not_found']} {prod_id}")
+                front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
                 return
             
             # Adicionar a tabela
-            table = self.layouts["transaction"][1][0]
             
-            model = table[2]
+            model = self.table_model
             row_num = model.rowCount()
             column_num = model.columnCount()
             
@@ -134,7 +137,32 @@ class MarketWindow(QMainWindow):
                 
             
             # Adicionar ao valor
-            self.cents_total += int(transaction["total_sold"])
-            
+            cents = int(transaction["total_sold"])
+            self.cents_per_row.append(cents)
+            self.cents_total += cents
             self.price_label.setText(finances.cents_to_money(self.cents_total, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
+
+
+    # Remover da transação e da tabela
+    def on_rem_prod(self):
+        item_id = front_utils.ask_input(self.lang_dict["ask_item_id_desc"], self.lang_dict["ask_item_id_title"], input_type=int)
+        
+        # Procurar o ID da transação na tabela, e se achar remover
+        for row in range(self.table_model.rowCount()):
+            item_id_r = self.table_model.data(self.table_model.index(row, self.item_id_index))
             
+            if item_id_r is None or item_id_r == "":
+                break # FIm da lista com valores
+            
+            price = self.cents_per_row[row]
+            if int(item_id_r) == int(item_id):
+                self.backend.cancel_item(int(item_id))
+                self.table_model.removeRow(row)
+                self.cents_total -= price
+                self.price_label.setText(finances.cents_to_money(self.cents_total, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
+                self.cents_per_row.pop(row)
+                return
+        
+        # Se chegou nessa parte, provavelmente não foi encontrado
+        front_utils.message(2, f"{self.lang_dict['item_not_found']}")
+        

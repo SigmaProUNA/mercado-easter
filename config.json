@@ -36,7 +36,10 @@
             "ask_quantity_desc": "Digite a quantidade.",
             "invalid_type_int": "Valor inválido. Deve ser um número inteiro.",
             "prod_not_found": "Produto não encontrado.",
-            "item_id": "Transação"
+            "item_id": "Transação",
+            "ask_item_id_title": "Número da transação",
+            "ask_item_id_desc": "Digite o número da transação.",
+            "item_not_found": "Transação nao encontrada."
         }
     }
 }

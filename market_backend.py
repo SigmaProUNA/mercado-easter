@@ -64,6 +64,13 @@ class Market():
                 self.current_transaction.append(transaction)
                 
                 return transaction
+            
+            
+    def cancel_item(self, item_id: int):
+        for transaction in self.current_transaction:
+            if transaction["item_id"] == item_id:
+                self.current_transaction.remove(transaction)
+                return
 
 
     def finish_transaction(self):
