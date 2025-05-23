@@ -117,11 +117,17 @@ class Market():
     
 
 
-    def update_prod(self, prod_id, name, base_price, stock):
+    def update_prod(self, prod_id, name = "", base_price = "", stock = ""):
         if self.db._prod_exists(prod_id):
-            self.db.update_price(prod_id, base_price)
-            self.db.update_name(prod_id, name)
-            self.db.prod_stock_update(prod_id, stock)
+
+            if base_price != "":
+                self.db.update_price(prod_id, base_price)
+            
+            if name != "":
+                self.db.update_name(prod_id, name)
+            
+            if stock != "":
+                self.db.prod_stock_update(prod_id, stock)
         else:
             raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
         

@@ -99,6 +99,11 @@ class DbEditor(QDialog):
             except exceptions.ProdNotFoundException:
                 front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
                 return
+        elif action == 2:
+            try:
+                self.backend.update_prod(prod_id, inputs[0], inputs[1], inputs[2])
+            except exceptions.ProdNotFoundException:
+                front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
             
 
 
