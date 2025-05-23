@@ -2,7 +2,7 @@ import json
 import market_backend
 import finances
 import front_utils
-import database
+import fastmath
 import exceptions
 import sys
 
@@ -60,7 +60,40 @@ class DbEditor(QDialog):
 
 
     def on_action(self):
-        pass
+        action = self.action_combobox.currentIndex()
+
+        # Primeiro checar se tem id do produto e se é valido
+        prod_id = self.prod_id[1].text()
+        if fastmath.is_integer(prod_id) and prod_id != "":
+            prod_id = int(prod_id)
+        else:
+            if action != 0:
+                front_utils.message(2, f"{self.lang_dict['invalid_id']}")
+                return
+        
+        inputs = [self.name[1].text(), self.base_price[1].text(), self.stock[1].text()]
+
+        # Procurar por inputs que deveriam ser inteiros
+        integer_indexes = [1, 2]
+        for i in inputs:
+            input_index = inputs.index(i) 
+            input_text = i
+            if input_text != "" and input_index in integer_indexes:
+                if not fastmath.is_integer(input_text):
+                    front_utils.message(2, f"{self.lang_dict['invalid_input_int']}")
+                    return
+                else:
+                    inputs[input_index] = finances.money_to_cents(input_text)
+
+        if action == 0:
+            # Todos os campos precisam ter valores nesse caso
+            for i in inputs:
+                if i == "":
+                    front_utils.message(2, f"{self.lang_dict['empty_fields_noid']}")
+                    return
+
+            self.backend.add_prod(inputs[0], inputs[1], inputs[2])
+            
 
 
 # Front end

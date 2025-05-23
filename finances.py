@@ -38,6 +38,17 @@ def cents_to_money(cents: int | str, money_unit: str = "R$", decimal_place: int 
     
     return money_unit + " " + money
 
+
+# Converte o valor em unidades humanas para números amigaveis para computadores
+def money_to_cents(money: str, separator_standard: str = Standards.BR_SEP) -> int:
+    conv_money = ""
+    for char in money:
+        if char in "0123456789":
+            conv_money += char
+
+    return int(conv_money)
+
+
 # Consegue o valor de lucro
 def get_profit(profit_rate: float, base_price: float) -> float:
     return base_price * profit_rate

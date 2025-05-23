@@ -56,7 +56,11 @@
             "edit": "Editar",
             "name": "Nome",
             "base_price": "Preço base",
-            "do_action": "Aplicar"
+            "do_action": "Aplicar",
+            "invalid_id": "ID inválido ou campo vazio.",
+            "empty_fields": "Todos os campos devem ser preenchdios.",
+            "empty_fields_noid": "Todos os campos devem ser preenchdios (exceto ID do produto).",
+            "invalid_input_int": "Alguns campos devem ser inteiros. Verifique se tudo está correto."
         }
     }
 }
