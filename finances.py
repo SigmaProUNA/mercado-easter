@@ -46,17 +46,20 @@ def money_to_cents(money: str, separator_standard: str = Standards.BR_SEP) -> in
         if char in "0123456789":
             conv_money += char
 
+    if conv_money == "":
+        conv_money = "0"
+
     return int(conv_money)
 
 
 # Consegue o valor de lucro
-def get_profit(profit_rate: float, base_price: float) -> float:
-    return base_price * profit_rate
+def get_profit(profit_rate: float, base_price: int) -> int:
+    return round(base_price * profit_rate)
 
 
 # Adiciona o lucro ao preco base
-def add_profit(profit_rate: float, base_price: float) -> float:
-    return base_price + get_profit(profit_rate, base_price)
+def add_profit(profit_rate: float, base_price: int) -> int:
+    return round(base_price + get_profit(profit_rate, base_price))
 
 
 if __name__ == "__main__":
