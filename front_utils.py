@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMessageBox, QHBoxLayout, QVBoxLayout
+from PyQt6.QtWidgets import QMessageBox, QHBoxLayout, QVBoxLayout, QInputDialog
 
 LANG_DICT: dict
 
@@ -37,3 +37,14 @@ def spaced_layout(layout: QHBoxLayout | QVBoxLayout, stretch: int, widgets: list
     layout.addStretch(stretch)
 
     return layout
+
+
+def ask_input(text: str, title: str, default: str = "") -> str | None:
+    input_dialog = QInputDialog()
+    input_dialog.setWindowTitle(title)
+    input_dialog.setLabelText(text)
+    input_dialog.setTextValue(default)
+
+    if input_dialog.exec() == QInputDialog.DialogCode.Accepted:
+        return input_dialog.textValue()
+    

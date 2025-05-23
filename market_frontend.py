@@ -71,7 +71,7 @@ class MarketWindow(QMainWindow):
 
                 if len(w) > 1:
                     if isinstance(w[0], QPushButton):
-                        w[0].clicked.connect(w[1])
+                        w[0].clicked.connect(w[1]) # type: ignore
                 
             val.append(widgets)
             
@@ -80,4 +80,4 @@ class MarketWindow(QMainWindow):
 
 
     def on_add_prod(self):
-        front_utils.message(1, "teste")
+        prod_id = front_utils.ask_input(self.lang_dict["ask_id_desc"], self.lang_dict["ask_id_title"])
