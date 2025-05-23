@@ -30,6 +30,9 @@ class MarketWindow(QMainWindow):
         self.central_widget = QWidget()
         self.main_layout = QVBoxLayout(self.central_widget)
         
+        # Variáveis
+        self.cents_total = 0
+        
         # Layouts para a UI
         self.layouts = {
             "top_bar": [QHBoxLayout()],
@@ -124,4 +127,10 @@ class MarketWindow(QMainWindow):
             data = [transaction["prod_id"], transaction["name"], transaction["quantity"], finances.cents_to_money(transaction["total_sold"], self.config["money_unit"], self.config["decimal_place"], self.config["separator"])]
             for col in range(column_num):
                 model.setData(model.index(row, col), data[col])
+                
+            
+            # Adicionar ao valor
+            self.cents_total += int(transaction["total_sold"])
+            
+            self.layouts["pay_price"][1][1][0].setText(finances.cents_to_money(self.cents_total, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
             
