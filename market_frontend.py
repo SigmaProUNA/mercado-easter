@@ -2,6 +2,7 @@ import json
 import market_backend
 import finances
 import front_utils
+import fastmath
 
 from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView
 from PyQt6.QtCore import Qt
@@ -90,5 +91,8 @@ class MarketWindow(QMainWindow):
         self.setCentralWidget(self.central_widget)
 
 
+    # Adicionar produto na transação
     def on_add_prod(self):
-        prod_id = front_utils.ask_input(self.lang_dict["ask_id_desc"], self.lang_dict["ask_id_title"])
+        prod_id = front_utils.ask_input(self.lang_dict["ask_id_desc"], self.lang_dict["ask_id_title"], input_type=int)
+        quanitity = front_utils.ask_input(self.lang_dict["ask_quantity_desc"], self.lang_dict["ask_quantity_title"], input_type=int)        
+        
