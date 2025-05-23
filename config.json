@@ -41,7 +41,9 @@
             "ask_item_id_desc": "Digite o número da transação.",
             "item_not_found": "Transação não encontrada.",
             "transac_finished": "Compra finalizada.",
-            "not_enough_items": "Sem itens suficientes no estoque."
+            "not_enough_items": "Sem itens suficientes no estoque.",
+            "ask_search_desc": "Digite o nome do produto.",
+            "ask_search_title": "Pesquisar"
         }
     }
 }

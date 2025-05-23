@@ -109,6 +109,11 @@ class Market():
             raise Exception(f"Invalid report type. Use a variable from REPORT_TYPES class.")
         
         return file
+    
+    
+    def search(self, name: str):
+        res = self.db.search_by_name(name)
+        return res
         
 
 if __name__ == "__main__":

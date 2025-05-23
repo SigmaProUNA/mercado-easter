@@ -125,7 +125,26 @@ class Database:
     # Definir o rate de profit para calculo
     def set_profit(self, profit: float):
         self.profit_rate = profit / 100
+        
 
+    def search_by_name(self, name):
+        self.cursor.execute(f"SELECT * FROM {self.product_table['table']} WHERE UPPER({self.product_table['name']}) LIKE UPPER('%{name}%')")
+        res = self.cursor.fetchall()
+        
+        return_dict = []
+        
+        # Resultados de pesquisa
+        for row in res:
+            return_dict.append({
+                "id": row[0],
+                "name": row[1],
+                "base_price": row[2],
+                "profit": row[3],
+                "price": row[4],
+                "stock": row[5]
+            })
+            
+        return return_dict
         
         
 if __name__ == "__main__":

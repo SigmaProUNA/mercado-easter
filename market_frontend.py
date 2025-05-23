@@ -75,7 +75,7 @@ class MarketWindow(QMainWindow):
                             
             
             elif key == "bottom_bar":
-                widgets = [[QPushButton(f"{self.lang_dict['search']}")],
+                widgets = [[QPushButton(f"{self.lang_dict['search']}"), self.on_search],
                            [QPushButton(f"{self.lang_dict['add_prod']}"), self.on_add_prod],
                            [QPushButton(f"{self.lang_dict['rem_prod']}"), self.on_rem_prod],
                            [QPushButton(f"{self.lang_dict['finish']}"), self.on_finish_transac]]
@@ -187,4 +187,10 @@ class MarketWindow(QMainWindow):
         except exceptions.NotEnoughItemsException:
             front_utils.message(2, f"{self.lang_dict['not_enough_items']}")
             return
-        
+    
+    
+    def on_search(self):
+        search = front_utils.ask_input(self.lang_dict["ask_search_desc"], self.lang_dict["ask_search_title"])
+        result = self.backend.search(search)
+        print(result)
+    
