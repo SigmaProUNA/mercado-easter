@@ -2,10 +2,9 @@ import json
 import market_backend
 import finances
 import front_utils
-import fastmath
 import exceptions
 
-from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView
+from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView, QComboBox
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItemModel
 
@@ -40,6 +39,9 @@ class MarketWindow(QMainWindow):
         
         # Adicionar no central e já ir colocando widgets
         for key, val in self.layouts.items():
+            add_stetch = False #  Para adicionar stretch
+            stetch_index = 0 # O indice
+            
             self.main_layout.addLayout(val[0])
             
             # Lista de widgets
@@ -47,11 +49,14 @@ class MarketWindow(QMainWindow):
             
             if key == "top_bar":
                 widgets = [[QLabel("Easter")],
-                [QPushButton(f"{self.lang_dict['gen_report']}")],
+                [QComboBox(), [self.lang_dict["daily"], self.lang_dict["weekly"], self.lang_dict["all_time"]]],
+                [QPushButton(f"{self.lang_dict['gen_report']}"), self.on_generate],
                 [QPushButton(f"{self.lang_dict['db_edit']}")]]
                 
                 # Negrito no label 0
-                widgets[0][0].setStyleSheet("font-weight: bold;")
+                widgets[0][0].setStyleSheet("font-weight: bold; font-size: 30px")
+                add_stetch = True
+                stetch_index = 1
             elif key == "pay_price":
                 widgets = [[
                     QLabel(f"{self.lang_dict['total_sold']}:")],
@@ -79,14 +84,22 @@ class MarketWindow(QMainWindow):
                            [QPushButton(f"{self.lang_dict['add_prod']}"), self.on_add_prod],
                            [QPushButton(f"{self.lang_dict['rem_prod']}"), self.on_rem_prod],
                            [QPushButton(f"{self.lang_dict['finish']}"), self.on_finish_transac]]
-                
+            
+            index = 0
             for w in widgets:
+                if stetch_index == index and add_stetch:
+                    val[0].addStretch(1)
+                
                 val[0].addWidget(w[0])
 
                 if len(w) > 1:
                     if isinstance(w[0], QPushButton):
                         w[0].clicked.connect(w[1]) # type: ignore
+                    elif isinstance(w[0], QComboBox):
+                        w[0].addItems(w[1]) # type: ignore
                 
+                index += 1
+                   
             val.append(widgets)
             
         self.central_widget.setLayout(self.main_layout)
@@ -214,4 +227,7 @@ class MarketWindow(QMainWindow):
             rows.append(filtered_row)   
         
         front_utils.table_dialog(self.lang_dict["search_res_title"], self.lang_dict["search_res_desc"], headers, rows)
-    
+
+
+    def on_generate(self):
+        print("Generate")

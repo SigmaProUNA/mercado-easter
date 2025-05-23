@@ -46,7 +46,10 @@
             "ask_search_title": "Pesquisar",
             "close": "Fechar",
             "search_res_title": "Resultados",
-            "search_res_desc": "Resultados da pesquisa"
+            "search_res_desc": "Resultados da pesquisa",
+            "daily": "Diário",
+            "weekly": "Semanal",
+            "all_time": "De sempre"
         }
     }
 }
