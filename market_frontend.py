@@ -78,7 +78,7 @@ class MarketWindow(QMainWindow):
                 widgets = [[QPushButton(f"{self.lang_dict['search']}")],
                            [QPushButton(f"{self.lang_dict['add_prod']}"), self.on_add_prod],
                            [QPushButton(f"{self.lang_dict['rem_prod']}"), self.on_rem_prod],
-                           [QPushButton(f"{self.lang_dict['finish']}")]]
+                           [QPushButton(f"{self.lang_dict['finish']}"), self.on_finish_transac]]
                 
             for w in widgets:
                 val[0].addWidget(w[0])
@@ -165,4 +165,19 @@ class MarketWindow(QMainWindow):
         
         # Se chegou nessa parte, provavelmente não foi encontrado
         front_utils.message(2, f"{self.lang_dict['item_not_found']}")
+    
+    
+    # Finaliza transação
+    def on_finish_transac(self):
+        self.backend.finish_transaction()
+        self.cents_per_row = []
+        self.cents_total = 0
+        self.price_label.setText(finances.cents_to_money(self.cents_total, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
+        
+        # limpar a tabela
+        for row in range(self.table_model.rowCount()):
+            for column in range (self.table_model.columnCount()):
+                self.table_model.setData(self.table_model.index(row, column), "")
+        
+        front_utils.message(0, f"{self.lang_dict['transac_finished']}")
         

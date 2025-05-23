@@ -39,7 +39,8 @@
             "item_id": "Transação",
             "ask_item_id_title": "Número da transação",
             "ask_item_id_desc": "Digite o número da transação.",
-            "item_not_found": "Transação nao encontrada."
+            "item_not_found": "Transação não encontrada.",
+            "transac_finished": "Compra finalizada."
         }
     }
 }
