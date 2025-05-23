@@ -72,10 +72,10 @@ class Database:
     def update_price(self, prod_id, price):
         if self._prod_exists(prod_id):
             row = (
-                prod_id,
                 price,
                 finances.get_profit(self.profit_rate, price),
-                finances.add_profit(self.profit_rate, price)
+                finances.add_profit(self.profit_rate, price),
+                prod_id
             )
             
             self.cursor.execute(
@@ -142,7 +142,7 @@ class Database:
             "headers": headers,
             "rows": rows
         }
-        
+    
         
 if __name__ == "__main__":
     pass

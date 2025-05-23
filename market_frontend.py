@@ -2,11 +2,29 @@ import json
 import market_backend
 import finances
 import front_utils
+import database
 import exceptions
+import sys
 
-from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView, QComboBox
+from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView, QComboBox, QDialog
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItemModel
+
+
+# Editor do banco
+class DbEditor(QDialog):
+    def __init__(self, config: dict, backend: market_backend.Market):
+        super().__init__()
+        self.setWindowTitle("Easter")
+        self.setMinimumSize(600, 400)
+
+        self.main_layout = QVBoxLayout()
+        self.backend = backend
+        self.config = config
+        self.lang_dict = self.config["words"][self.config["selected_lang"]]
+
+        self.setLayout(self.main_layout)
+
 
 
 # Front end
@@ -51,7 +69,7 @@ class MarketWindow(QMainWindow):
                 widgets = [[QLabel("Easter")],
                 [QComboBox(), [self.lang_dict["daily"], self.lang_dict["weekly"], self.lang_dict["all_time"]]],
                 [QPushButton(f"{self.lang_dict['gen_report']}"), self.on_generate],
-                [QPushButton(f"{self.lang_dict['db_edit']}")]]
+                [QPushButton(f"{self.lang_dict['db_edit']}"), self.on_db_edit]]
                 
                 # Negrito no label 0
                 widgets[0][0].setStyleSheet("font-weight: bold; font-size: 30px")
@@ -238,4 +256,8 @@ class MarketWindow(QMainWindow):
         
         front_utils.show_markdown(report, self.lang_dict["report_title"])
         
-        
+
+    def on_db_edit(self):
+        editor = DbEditor(self.config, self.backend)
+        editor.exec()
+

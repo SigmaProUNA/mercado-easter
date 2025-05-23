@@ -41,7 +41,7 @@ def spaced_layout(layout: QHBoxLayout | QVBoxLayout, stretch: int, widgets: list
     return layout
 
 
-def ask_input(text: str, title: str, default: str = "", input_type = str) -> str:
+def ask_input(text: str, title: str, default: str = "", input_type: type = str) -> str:
     input_dialog = QInputDialog()
     input_dialog.setWindowTitle(title)
     input_dialog.setLabelText(text)
