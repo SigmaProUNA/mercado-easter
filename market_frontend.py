@@ -116,6 +116,7 @@ class MarketWindow(QMainWindow):
         self.table_model = self.table[2]
         self.item_id_index = 1
         self.cents_per_row = [] # Armazenar o valor original de centavos para linha
+        self.report_combobox = self.layouts["top_bar"][1][1][0]
 
     # Adicionar produto na transação
     def on_add_prod(self):
@@ -229,5 +230,10 @@ class MarketWindow(QMainWindow):
         front_utils.table_dialog(self.lang_dict["search_res_title"], self.lang_dict["search_res_desc"], headers, rows)
 
 
+    # Gerar o relatório com base na escolha
     def on_generate(self):
-        print("Generate")
+        choice = self.report_combobox.currentIndex()
+        
+        report = self.backend.generate_report(choice)
+        print(report)
+        

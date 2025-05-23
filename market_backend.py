@@ -5,9 +5,9 @@ import json
 
 
 class REPORT_TYPES:
-    DAY = 1
-    WEEK = 2
-    ALL_TIME = 3
+    DAY = 0
+    WEEK = 1
+    ALL_TIME = 2
 
 
 class Market():
