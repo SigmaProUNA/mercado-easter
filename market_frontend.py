@@ -116,6 +116,9 @@ class MarketWindow(QMainWindow):
             except exceptions.ProdNotFoundException:
                 front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
                 return
+            except exceptions.NotEnoughItemsException:
+                front_utils.message(2, f"{self.lang_dict['not_enough_items']}")
+                return
             
             # Adicionar a tabela
             
@@ -169,15 +172,19 @@ class MarketWindow(QMainWindow):
     
     # Finaliza transação
     def on_finish_transac(self):
-        self.backend.finish_transaction()
-        self.cents_per_row = []
-        self.cents_total = 0
-        self.price_label.setText(finances.cents_to_money(self.cents_total, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
-        
-        # limpar a tabela
-        for row in range(self.table_model.rowCount()):
-            for column in range (self.table_model.columnCount()):
-                self.table_model.setData(self.table_model.index(row, column), "")
-        
-        front_utils.message(0, f"{self.lang_dict['transac_finished']}")
+        try:
+            self.backend.finish_transaction()
+            self.cents_per_row = []
+            self.cents_total = 0
+            self.price_label.setText(finances.cents_to_money(self.cents_total, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
+            
+            # limpar a tabela
+            for row in range(self.table_model.rowCount()):
+                for column in range (self.table_model.columnCount()):
+                    self.table_model.setData(self.table_model.index(row, column), "")
+            
+            front_utils.message(0, f"{self.lang_dict['transac_finished']}")
+        except exceptions.NotEnoughItemsException:
+            front_utils.message(2, f"{self.lang_dict['not_enough_items']}")
+            return
         
