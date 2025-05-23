@@ -7,7 +7,7 @@ import exceptions
 
 from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QStandardItemModel, QStandardItem
+from PyQt6.QtGui import QStandardItemModel
 
 
 # Front end
@@ -195,10 +195,21 @@ class MarketWindow(QMainWindow):
         
         headers = [self.lang_dict["id"], self.lang_dict["product"], self.lang_dict["price"], self.lang_dict["quantity"]]
         row_indexes = [0, 1, 4, 5]
+        money_indexes = [4]
         
         rows = []
         for row in result["rows"]:
-            rows.append([row[i] for i in row_indexes])
+            filtered_row = []
+            for indx in row_indexes:
+                item = row[indx]
+                
+                # Se o index for monetário, transformar
+                if indx in money_indexes:
+                    item = finances.cents_to_money(int(item), self.config["money_unit"], self.config["decimal_place"], self.config["separator"])
+                
+                filtered_row.append(item)
+                
+            rows.append(filtered_row)   
         
         front_utils.table_dialog(self.lang_dict["search_res_title"], self.lang_dict["search_res_desc"], headers, rows)
     

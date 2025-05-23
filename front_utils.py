@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QMessageBox, QHBoxLayout, QVBoxLayout, QInputDialog, QTableView, QDialog, QLabel, QPushButton
-from PyQt6.QtGui import QStandardItemModel, QStandardItem
+from PyQt6.QtGui import QStandardItemModel
 import fastmath
-import exceptions
 
 LANG_DICT: dict
 
