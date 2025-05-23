@@ -15,7 +15,7 @@ class MarketWindow(QMainWindow):
     def __init__(self, config: str):
         super().__init__()
         self.setWindowTitle("Easter")
-        self.setMinimumSize(600, 400)
+        self.setMinimumSize(1024, 600)
         
         # Configurações
         self.config = json.loads(open(config, "r").read())
@@ -193,5 +193,12 @@ class MarketWindow(QMainWindow):
         search = front_utils.ask_input(self.lang_dict["ask_search_desc"], self.lang_dict["ask_search_title"])
         result = self.backend.search(search)
         
-        front_utils.table_dialog(self.lang_dict["search_res_title"], self.lang_dict["search_res_desc"], result["headers"], result["rows"])
+        headers = [self.lang_dict["id"], self.lang_dict["product"], self.lang_dict["price"], self.lang_dict["quantity"]]
+        row_indexes = [0, 1, 4, 5]
+        
+        rows = []
+        for row in result["rows"]:
+            rows.append([row[i] for i in row_indexes])
+        
+        front_utils.table_dialog(self.lang_dict["search_res_title"], self.lang_dict["search_res_desc"], headers, rows)
     

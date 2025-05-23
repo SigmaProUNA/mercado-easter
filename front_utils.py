@@ -66,9 +66,10 @@ def ask_input(text: str, title: str, default: str = "", input_type = str) -> str
     
     
 # Exibir um dialogo com tabela e botão de fechar
-def table_dialog(title: str, label: str, headers: list, content: list[list]):
+def table_dialog(title: str, label: str, headers: list, content: list[list]):    
     dialog = QDialog()
     dialog.setWindowTitle(title)
+    dialog.setMinimumSize(600, 400)
     dialog_layout = QVBoxLayout()
     
     text_label = QLabel(label)
