@@ -93,6 +93,12 @@ class DbEditor(QDialog):
                     return
 
             self.backend.add_prod(inputs[0], inputs[1], inputs[2])
+        elif action == 1:
+            try:
+                self.backend.remove_prod(prod_id)
+            except exceptions.ProdNotFoundException:
+                front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
+                return
             
 
 
