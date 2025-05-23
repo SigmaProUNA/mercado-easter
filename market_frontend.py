@@ -192,5 +192,6 @@ class MarketWindow(QMainWindow):
     def on_search(self):
         search = front_utils.ask_input(self.lang_dict["ask_search_desc"], self.lang_dict["ask_search_title"])
         result = self.backend.search(search)
-        print(result)
+        
+        front_utils.table_dialog(self.lang_dict["search_res_title"], self.lang_dict["search_res_desc"], result["headers"], result["rows"])
     

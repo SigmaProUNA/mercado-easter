@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QMessageBox, QHBoxLayout, QVBoxLayout, QInputDialog
+from PyQt6.QtWidgets import QMessageBox, QHBoxLayout, QVBoxLayout, QInputDialog, QTableView, QDialog, QLabel, QPushButton
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
 import fastmath
 import exceptions
 
@@ -62,4 +63,38 @@ def ask_input(text: str, title: str, default: str = "", input_type = str) -> str
         return inp
     else:
         return ""
+    
+    
+# Exibir um dialogo com tabela e botão de fechar
+def table_dialog(title: str, label: str, headers: list, content: list[list]):
+    dialog = QDialog()
+    dialog.setWindowTitle(title)
+    dialog_layout = QVBoxLayout()
+    
+    text_label = QLabel(label)
+    close_button = QPushButton(LANG_DICT["close"])
+    close_button.clicked.connect(dialog.close)
+    
+    row_count = len(content)
+    column_count = len(headers)
+    table = QTableView()
+    model = QStandardItemModel()
+    model.setHorizontalHeaderLabels(headers)
+    
+    model.setRowCount(row_count)
+    model.setColumnCount(column_count)
+    
+    for row in range(row_count):
+        for column in range(column_count):
+            indx = model.index(row, column)
+            model.setData(indx, str(content[row][column]))
+    
+    table.setModel(model)
+    
+    dialog_layout.addWidget(text_label)
+    dialog_layout.addWidget(table)
+    dialog_layout.addWidget(close_button)
+    
+    dialog.setLayout(dialog_layout)
+    dialog.exec()
     

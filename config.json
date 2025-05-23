@@ -43,7 +43,10 @@
             "transac_finished": "Compra finalizada.",
             "not_enough_items": "Sem itens suficientes no estoque.",
             "ask_search_desc": "Digite o nome do produto.",
-            "ask_search_title": "Pesquisar"
+            "ask_search_title": "Pesquisar",
+            "close": "Fechar",
+            "search_res_title": "Resultados",
+            "search_res_desc": "Resultados da pesquisa"
         }
     }
 }

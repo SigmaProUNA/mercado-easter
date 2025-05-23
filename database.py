@@ -131,20 +131,17 @@ class Database:
         self.cursor.execute(f"SELECT * FROM {self.product_table['table']} WHERE UPPER({self.product_table['name']}) LIKE UPPER('%{name}%')")
         res = self.cursor.fetchall()
         
-        return_dict = []
+        headers = ["id", "name", "base_price", "profit", "price", "stock"]
+        rows = []
         
         # Resultados de pesquisa
         for row in res:
-            return_dict.append({
-                "id": row[0],
-                "name": row[1],
-                "base_price": row[2],
-                "profit": row[3],
-                "price": row[4],
-                "stock": row[5]
-            })
-            
-        return return_dict
+            rows.append([x for x in row])
+        
+        return {
+            "headers": headers,
+            "rows": rows
+        }
         
         
 if __name__ == "__main__":
