@@ -6,7 +6,7 @@ import database
 import exceptions
 import sys
 
-from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView, QComboBox, QDialog
+from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView, QComboBox, QDialog, QGridLayout, QLineEdit
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QStandardItemModel
 
@@ -16,15 +16,51 @@ class DbEditor(QDialog):
     def __init__(self, config: dict, backend: market_backend.Market):
         super().__init__()
         self.setWindowTitle("Easter")
-        self.setMinimumSize(600, 400)
 
         self.main_layout = QVBoxLayout()
         self.backend = backend
         self.config = config
         self.lang_dict = self.config["words"][self.config["selected_lang"]]
 
+        # COmeçar a fazer a UI
+
+        # Escolher ação
+        self.top_layout = QHBoxLayout()
+        self.action_combobox = QComboBox()
+        self.actions_choose = [self.lang_dict["add"], self.lang_dict["remove"], self.lang_dict["edit"]]
+
+        self.action_combobox.addItems(self.actions_choose)
+
+        # Botão de fazer a ação
+        self.action_button = QPushButton(self.lang_dict["do_action"])
+        self.action_button.clicked.connect(self.on_action)
+
+        self.top_layout.addWidget(self.action_combobox)
+        self.top_layout.addWidget(self.action_button)
+        # Inputs:
+        self.input_layout = QGridLayout()
+
+        self.prod_id = [QLabel(self.lang_dict["id"]), QLineEdit()]
+        self.name = [QLabel(self.lang_dict["name"]), QLineEdit()]
+        self.base_price = [QLabel(self.lang_dict["base_price"]), QLineEdit()]
+        self.stock = [QLabel(self.lang_dict["quantity"]), QLineEdit()]
+
+        row = 0
+        for i in [self.prod_id, self.name, self.base_price, self.stock]:
+            column = 0
+            for val in i:
+                self.input_layout.addWidget(val, row, column)
+                column += 1
+
+            row += 1
+
+        self.main_layout.addLayout(self.top_layout)
+        self.main_layout.addLayout(self.input_layout)
         self.setLayout(self.main_layout)
 
+
+    def on_action(self):
+        pass
 
 
 # Front end

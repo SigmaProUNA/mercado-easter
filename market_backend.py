@@ -125,6 +125,14 @@ class Market():
         else:
             raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
         
+    
+    def add_prod(self, name, base_price, stock):
+        self.db.add_prod(name, base_price, stock)
+
+    
+    def remove_prod(self, prod_id):
+        self.db.remove_prod(prod_id)
+        
         
 
 if __name__ == "__main__":

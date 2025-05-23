@@ -50,7 +50,13 @@
             "daily": "Diário",
             "weekly": "Semanal",
             "all_time": "De sempre",
-            "report_title": "Relatório"
+            "report_title": "Relatório",
+            "add": "Adicionar",
+            "remove": "Remover",
+            "edit": "Editar",
+            "name": "Nome",
+            "base_price": "Preço base",
+            "do_action": "Aplicar"
         }
     }
 }
