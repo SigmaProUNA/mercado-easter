@@ -106,13 +106,12 @@ class DbEditor(QDialog):
                 front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
             
 
-
 # Front end
 class MarketWindow(QMainWindow):
     def __init__(self, config: str):
         super().__init__()
         self.setWindowTitle("Easter")
-        self.setMinimumSize(1024, 600)
+        self.setMinimumSize(600, 400)
         
         # Configurações
         self.config = json.loads(open(config, "r").read())
