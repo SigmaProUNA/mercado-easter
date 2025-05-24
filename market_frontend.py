@@ -115,7 +115,7 @@ class MarketWindow(QMainWindow):
     def __init__(self, config: str):
         super().__init__()
         self.setWindowTitle("Easter")
-        self.setMinimumSize(600, 400)
+        self.setMinimumSize(531, 400)
         
         # Configurações
         self.config = json.loads(open(config, "r").read())
