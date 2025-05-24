@@ -61,6 +61,7 @@
             "empty_fields": "Todos os campos devem ser preenchdios.",
             "empty_fields_noid": "Todos os campos devem ser preenchdios (exceto ID do produto).",
             "invalid_input_int": "Alguns campos devem ser inteiros. Verifique se tudo está correto.",
+            "invalid_input_float": "Alguns campos devem ser números. Verifique se tudo está correto.",
             "action_done": "Operação concluida"
         }
     }

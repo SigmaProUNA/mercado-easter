@@ -74,16 +74,27 @@ class DbEditor(QDialog):
         inputs = [self.name[1].text(), self.base_price[1].text(), self.stock[1].text()]
 
         # Procurar por inputs que deveriam ser inteiros
-        integer_indexes = [1, 2]
+        integer_indexes = [2]
+        float_indexes = [1]
         for i in inputs:
             input_index = inputs.index(i) 
             input_text = i
             if input_text != "":
-                if not fastmath.is_integer(input_text) and input_index in integer_indexes:
-                    front_utils.message(2, f"{self.lang_dict['invalid_input_int']}")
-                    return
+                is_num = True
+                if input_index in integer_indexes:
+                    if not fastmath.is_integer(input_text):
+                        front_utils.message(2, f"{self.lang_dict['invalid_input_int']}")
+                        return                    
+                elif input_index in float_indexes:
+                    if not fastmath.is_number(input_text):
+                        front_utils.message(2, f"{self.lang_dict['invalid_input_float']}")
+                        return
                 else:
+                    is_num = False
+
+                if is_num:
                     inputs[input_index] = finances.money_to_cents(input_text)
+
 
         if action == 0:
             # Todos os campos precisam ter valores nesse caso
@@ -106,7 +117,6 @@ class DbEditor(QDialog):
                 front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
 
         front_utils.message(0, f"{self.lang_dict['action_done']}")
-        self.close()
         return
             
 
