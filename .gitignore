@@ -181,3 +181,6 @@ cython_debug/
 
 # Report
 report
+
+# Pycharm
+.idea

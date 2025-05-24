@@ -1,6 +1,6 @@
-'''
+"""
 Biblioteca para funções matemáticas rápidas
-'''
+"""
 
 # Verifica se o numbero é inteiro
 def is_integer(x: str) -> bool:

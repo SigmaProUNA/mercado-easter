@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMessageBox, QHBoxLayout, QVBoxLayout, QInputDialog, QTableView, QDialog, QLabel, QPushButton, QTextEdit
+from PyQt6.QtWidgets import QMessageBox, QVBoxLayout, QInputDialog, QTableView, QDialog, QLabel, QPushButton, QTextEdit
 from PyQt6.QtGui import QStandardItemModel
 import fastmath
 
@@ -14,31 +14,6 @@ def message(mtype, text):
     msg.setText(text)
     msg.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg.exec()
-
-
-# Pergunta sim ou não
-def ask_yes_no(text):
-    msg = QMessageBox()
-    msg.setWindowTitle(LANG_DICT["confirmation"])
-    msg.setText(text)
-    msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-
-    if msg.exec() != QMessageBox.StandardButton.Yes:
-        return False
-
-    return True
-
-
-# Cria layouts espaçados
-def spaced_layout(layout: QHBoxLayout | QVBoxLayout, stretch: int, widgets: list):
-    layout.addStretch(stretch)
-
-    for widget in widgets:
-        layout.addWidget(widget)
-
-    layout.addStretch(stretch)
-
-    return layout
 
 
 def ask_input(text: str, title: str, default: str = "", input_type: type = str) -> str:

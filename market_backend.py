@@ -4,13 +4,13 @@ import exceptions
 import json
 
 
-class REPORT_TYPES:
+class ReportTypes:
     DAY = 0
     WEEK = 1
     ALL_TIME = 2
 
 
-class Market():
+class Market:
     def __init__(self, config_path):
         self.config_path = config_path
         self.config = json.load(open(config_path))
@@ -23,11 +23,6 @@ class Market():
         
         self.current_transaction = []
         self.item_id = 0 # Para facilitar encontrar transações especificas para realizar uma ação
-    
-
-    def generate_testing_data(self):
-        for x in range(100):
-            self.db.add_prod(f"Produto {x}", 10000, 10000000)
 
     # Vender produto
     def sell(self, prod_id, quantity):
@@ -89,26 +84,18 @@ class Market():
         # Finalizar a transação
         self.current_transaction = []
         self.item_id = 0
-    
-
-    def get_transaction_content(self):
-        return self.current_transaction
 
     
     # Gerar o relatório
     def generate_report(self, tp: int):
-        file = ""
-        
-        if tp == REPORT_TYPES.DAY:
-            file = self.csv.generate_day_report()
-        elif tp == REPORT_TYPES.WEEK:
-            file = self.csv.generate_week_report()
-        elif tp == REPORT_TYPES.ALL_TIME:
-            file = self.csv.generate_all_time_report()
+        if tp == ReportTypes.DAY:
+            return self.csv.generate_day_report()
+        elif tp == ReportTypes.WEEK:
+            return self.csv.generate_week_report()
+        elif tp == ReportTypes.ALL_TIME:
+            return self.csv.generate_all_time_report()
         else:
-            raise Exception(f"Invalid report type. Use a variable from REPORT_TYPES class.")
-        
-        return file
+            raise Exception(f"Invalid report type. Use a variable from ReportTypes class.")
     
     
     def search(self, name: str):
@@ -118,7 +105,7 @@ class Market():
 
 
     def update_prod(self, prod_id, name = "", base_price = "", stock = ""):
-        if self.db._prod_exists(prod_id):
+        if self.db.prod_exists(prod_id):
 
             if base_price != "":
                 self.db.update_price(prod_id, base_price)

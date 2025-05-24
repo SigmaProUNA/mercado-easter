@@ -22,7 +22,7 @@ class Database:
     
     
     # Função que verifica se o produto existe
-    def _prod_exists(self, prod_id):
+    def prod_exists(self, prod_id):
         self.cursor.execute(f"SELECT * FROM {self.product_table['table']} WHERE id={prod_id}")
         res = self.cursor.fetchone()
         
@@ -62,7 +62,7 @@ class Database:
     
     # Remover produto
     def remove_prod(self, prod_id):
-        if self._prod_exists(prod_id):
+        if self.prod_exists(prod_id):
             self.cursor.execute(f"DELETE FROM {self.product_table['table']} WHERE id={prod_id}")
             self.conn.commit()
             return True
@@ -70,7 +70,7 @@ class Database:
             raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
         
     def update_price(self, prod_id, price):
-        if self._prod_exists(prod_id):
+        if self.prod_exists(prod_id):
             row = (
                 price,
                 finances.get_profit(self.profit_rate, price),
@@ -90,7 +90,7 @@ class Database:
         
         
     def update_name(self, prod_id, name):
-        if self._prod_exists(prod_id):
+        if self.prod_exists(prod_id):
             self.cursor.execute(f'UPDATE {self.product_table['table']} SET {self.product_table['name']}="{name}" WHERE {self.product_table['id']}={prod_id}')
             self.conn.commit()
             return True
@@ -99,7 +99,7 @@ class Database:
         
         
     def get_prod(self, prod_id):
-        if self._prod_exists(prod_id):
+        if self.prod_exists(prod_id):
             self.cursor.execute(f"SELECT * FROM {self.product_table['table']} WHERE id={prod_id}")
             res =  self.cursor.fetchone()
             return {
@@ -115,7 +115,7 @@ class Database:
         
 
     def prod_stock_update(self, prod_id, stock):
-        if self._prod_exists(prod_id):
+        if self.prod_exists(prod_id):
             self.cursor.execute(f"UPDATE {self.product_table['table']} SET {self.product_table['stock']}={stock} WHERE {self.product_table['id']}={prod_id}")
             self.conn.commit()
         else:

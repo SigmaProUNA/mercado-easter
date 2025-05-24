@@ -4,7 +4,6 @@ import finances
 import front_utils
 import fastmath
 import exceptions
-import sys
 
 from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView, QComboBox, QDialog, QGridLayout, QLineEdit
 from PyQt6.QtCore import Qt
@@ -142,10 +141,10 @@ class MarketWindow(QMainWindow):
         
         # Layouts para a UI
         self.layouts = {
-            "top_bar": [QHBoxLayout()],
-            "pay_price": [QVBoxLayout()],
-            "transaction": [QHBoxLayout()],
-            "bottom_bar": [QHBoxLayout()]
+            "top_bar": [QHBoxLayout()], # type: ignore
+            "pay_price": [QVBoxLayout()], # type: ignore
+            "transaction": [QHBoxLayout()], # type: ignore
+            "bottom_bar": [QHBoxLayout()] # type: ignore
         }
         
         # Adicionar no central e já ir colocando widgets
@@ -211,7 +210,7 @@ class MarketWindow(QMainWindow):
                 
                 index += 1
                    
-            val.append(widgets)
+            val.append(widgets) # type: ignore
             
         self.central_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.central_widget)
@@ -222,12 +221,12 @@ class MarketWindow(QMainWindow):
     # Variáveis
     def __init_vars__(self):
         self.cents_total = 0
-        self.price_label = self.layouts["pay_price"][1][1][0]
-        self.table = self.layouts["transaction"][1][0]
+        self.price_label = self.layouts["pay_price"][1][1][0] # type: ignore
+        self.table = self.layouts["transaction"][1][0] # type: ignore
         self.table_model = self.table[2]
         self.item_id_index = 1
         self.cents_per_row = [] # Armazenar o valor original de centavos para linha
-        self.report_combobox = self.layouts["top_bar"][1][1][0]
+        self.report_combobox = self.layouts["top_bar"][1][1][0] # type: ignore
 
     # Adicionar produto na transação
     def on_add_prod(self):
@@ -302,7 +301,7 @@ class MarketWindow(QMainWindow):
         try:
             self.backend.finish_transaction()
             self.cents_per_row = []
-            self.cents_total = 0
+            self.cents_total = 0 
             self.price_label.setText(finances.cents_to_money(self.cents_total, self.config["money_unit"], self.config["decimal_place"], self.config["separator"]))
             
             # limpar a tabela

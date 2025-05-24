@@ -14,8 +14,6 @@ class Standards:
 def cents_to_money(cents: int | str, money_unit: str = "R$", decimal_place: int = 2, separator_standard: str = Standards.BR_SEP) -> str:
     cents = str(cents)
     
-    money = ""
-    
     # Inserir o separador
     money = [c for c in cents]
     separator_index = (len(cents)-decimal_place)
@@ -40,7 +38,7 @@ def cents_to_money(cents: int | str, money_unit: str = "R$", decimal_place: int 
 
 
 # Converte o valor em unidades humanas para números amigaveis para computadores
-def money_to_cents(money: str, separator_standard: str = Standards.BR_SEP) -> int:
+def money_to_cents(money: str) -> int:
     conv_money = ""
     for char in money:
         if char in "0123456789":
