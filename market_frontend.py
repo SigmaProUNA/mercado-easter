@@ -106,6 +106,7 @@ class DbEditor(QDialog):
                 front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
 
         front_utils.message(0, f"{self.lang_dict['action_done']}")
+        self.close()
         return
             
 
