@@ -17,14 +17,14 @@ class SellReport:
         self.total_sold_index = 4
         self.total_profit_index = 5
         self.datetime_format = "%Y-%m-%d"
-        self.config = json.load(open(config, "r"))
+        self.config = json.load(open(config, "r", encoding='utf-8'))
         self.lang_dict = self.config["words"][self.config["selected_lang"]] # Lingua selecionada
         self.db = db
     
 
     # Consegue o proximo id de venda
     def _next_id(self):
-        csv = open(f"{self.path}", "r").readlines()
+        csv = open(f"{self.path}", "r", encoding='utf-8').readlines()
         highest = 0
         
         if len(csv) > 1:
@@ -44,7 +44,7 @@ class SellReport:
     def initialize(self):
         if not os.path.exists(self.path):
             # Inicializa o CSV com o header
-            f = open(f"{self.path}", "w+")
+            f = open(f"{self.path}", "w+", encoding='utf-8')
             
             f.write(self.delimiter.join(self.header)+"\n")
 
@@ -61,7 +61,7 @@ class SellReport:
         row = [str(r) for r in row] # Converte cada item para str
 
         # Adicionar no arquivo csv
-        csv_f = open(self.path, "a")
+        csv_f = open(self.path, "a", encoding='utf-8')
         csv_f.write(self.delimiter.join(row)+"\n")
         csv_f.close()
 
@@ -75,7 +75,7 @@ class SellReport:
         
         md_text = "" # O report será feito em markdown
         today = datetime.datetime.now().strftime(self.datetime_format) if today_only else None # Só do dia aatual caso today
-        csv = [x.strip().replace("\n", "") for x in open(self.path, "r").readlines()] # CSV
+        csv = [x.strip().replace("\n", "") for x in open(self.path, "r", encoding='utf-8').readlines()] # CSV
 
 
         # TAbela de vendas
@@ -168,7 +168,7 @@ class SellReport:
         # Salva o markdown
         os.makedirs(self.config['report_path'], exist_ok=True)
         full_path = os.path.join(self.config['report_path'], f"{filename}.md") #f"{self.config['report_path']}/{filename}.md"
-        open(full_path, "w+").write(md_text)
+        open(full_path, "w+", encoding='utf-8').write(md_text)
         
         return full_path
 

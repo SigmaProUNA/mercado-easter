@@ -127,7 +127,7 @@ class MarketWindow(QMainWindow):
         self.setMinimumSize(531, 400)
         
         # Configurações
-        self.config = json.loads(open(config, "r").read())
+        self.config = json.loads(open(config, "r", encoding='utf-8').read())
         self.lang_dict = self.config["words"][self.config["selected_lang"]]
         front_utils.LANG_DICT = self.lang_dict # Definir a lingua do bagulho
         
@@ -344,7 +344,7 @@ class MarketWindow(QMainWindow):
     def on_generate(self):
         choice = self.report_combobox.currentIndex()
         
-        report = open(self.backend.generate_report(choice), "r").read()
+        report = open(self.backend.generate_report(choice), "r", encoding='utf-8').read()
         
         front_utils.show_markdown(report, self.lang_dict["report_title"])
         

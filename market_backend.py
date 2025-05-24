@@ -13,7 +13,7 @@ class ReportTypes:
 class Market:
     def __init__(self, config_path):
         self.config_path = config_path
-        self.config = json.load(open(config_path))
+        self.config = json.load(open(config_path, encoding='utf-8'))
         self.db = database.Database(self.config['db_path'])
         self.db.initialize()
         self.db.set_profit(self.config['profit'])
