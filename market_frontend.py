@@ -78,8 +78,8 @@ class DbEditor(QDialog):
         for i in inputs:
             input_index = inputs.index(i) 
             input_text = i
-            if input_text != "" and input_index in integer_indexes:
-                if not fastmath.is_integer(input_text):
+            if input_text != "":
+                if not fastmath.is_integer(input_text) and input_index in integer_indexes:
                     front_utils.message(2, f"{self.lang_dict['invalid_input_int']}")
                     return
                 else:
@@ -104,6 +104,9 @@ class DbEditor(QDialog):
                 self.backend.update_prod(prod_id, inputs[0], inputs[1], inputs[2])
             except exceptions.ProdNotFoundException:
                 front_utils.message(2, f"{self.lang_dict['prod_not_found']}")
+
+        front_utils.message(0, f"{self.lang_dict['action_done']}")
+        return
             
 
 # Front end
