@@ -90,12 +90,12 @@ class Database:
         
         
     def update_name(self, prod_id, name):
-        if self.prod_exists(prod_id):
-            self.cursor.execute(f'UPDATE {self.product_table['table']} SET {self.product_table['name']}="{name}" WHERE {self.product_table['id']}={prod_id}')
-            self.conn.commit()
-            return True
-        else:
-            raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
+     if self.prod_exists(prod_id):
+        self.cursor.execute(f"UPDATE {self.product_table['table']} SET {self.product_table['name']}=\"{name}\" WHERE {self.product_table['id']}={prod_id}")
+        self.conn.commit()
+        return True
+     else:
+        raise exceptions.ProdNotFoundException(f"Produto {prod_id} não encontrado")
         
         
     def get_prod(self, prod_id):
