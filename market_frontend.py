@@ -74,7 +74,7 @@ class DbEditor(QDialog):
 
         # Procurar por inputs que deveriam ser inteiros
         integer_indexes = [2]
-        float_indexes = [1]
+        money_indexes = [1]
         for i in inputs:
             input_index = inputs.index(i) 
             input_text = i
@@ -84,9 +84,12 @@ class DbEditor(QDialog):
                     if not fastmath.is_integer(input_text):
                         front_utils.message(2, f"{self.lang_dict['invalid_input_int']}")
                         return                    
-                elif input_index in float_indexes:
+                elif input_index in money_indexes:
                     if not fastmath.is_number(input_text):
                         front_utils.message(2, f"{self.lang_dict['invalid_input_float']}")
+                        return
+                    elif not fastmath.is_money(input_text):
+                        front_utils.message(2, f"{self.lang_dict['invalid_input_money']}")
                         return
                 else:
                     is_num = False
