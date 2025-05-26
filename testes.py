@@ -1,0 +1,88 @@
+# testes.py
+
+import pytest
+from fastmath import is_integer, is_number
+from finances import cents_to_money
+from database import Database
+import sqlite3
+import os
+
+# =============================
+# Testes para fastmath.py
+# =============================
+
+def test_is_integer():
+    assert is_integer("123456")
+    assert is_integer("0")
+    assert not is_integer("12a3")
+    assert not is_integer("")
+    assert not is_integer(" ")
+
+def test_is_number():
+    assert is_number("123")
+    assert is_number("45,67")  # vírgula
+    assert is_number("3/4")    # barra
+    assert not is_number("abc")
+    assert not is_number("12.3")  # ponto não suportado
+    assert not is_number("")
+
+# =============================
+# Testes para finances.py
+# =============================
+
+def test_cents_to_money():
+    assert cents_to_money(1234) == "12,34"
+    assert cents_to_money("75") == "0,75"
+    assert cents_to_money("9") == "0,09"
+    assert cents_to_money("999") == "9,99"
+    assert cents_to_money("1000", separator_standard=".") == "10.00"
+
+# =============================
+# Testes para database.py
+# =============================
+
+def test_prod_exists():
+    # Banco em memória para teste
+    db = Database(":memory:")
+    db.cursor.execute("""
+        CREATE TABLE products (
+            id INTEGER PRIMARY KEY,
+            prod_name TEXT,
+            base_price REAL,
+            profit REAL,
+            unit_price REAL,
+            stock INTEGER
+        )
+    """)
+    db.cursor.execute("INSERT INTO products (id, prod_name, base_price, profit, unit_price, stock) VALUES (1, 'Produto A', 10, 0.2, 12, 100)")
+    db.conn.commit()
+
+    assert db.prod_exists(1) == True
+    assert db.prod_exists(2) == False
+
+# =============================
+# (Opcional) Testes iniciais para market_backend.py
+# =============================
+
+def test_market_init(tmp_path):
+    # Criar arquivos de configuração falsos
+    db_path = tmp_path / "db.sqlite"
+    csv_path = tmp_path / "sell.csv"
+    config_path = tmp_path / "config.json"
+
+    db_path.write_text("")
+    csv_path.write_text("")
+    config_path.write_text("""
+    {
+        "db_path": "%s",
+        "profit": 0.2,
+        "sell_csv_path": "%s",
+        "words": {"pt": {"ex": "teste"}},
+        "selected_lang": "pt"
+    }
+    """ % (str(db_path).replace("\\", "\\\\"), str(csv_path).replace("\\", "\\\\")))
+
+    # Testa se inicializa sem erro
+    from market_backend import Market
+    market = Market(str(config_path))
+    assert market.config["profit"] == 0.2
