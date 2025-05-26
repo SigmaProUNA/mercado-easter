@@ -49,11 +49,12 @@ def test_is_number():
 # =============================
 
 def test_cents_to_money():
-    assert cents_to_money(1234) == "12,34"
-    assert cents_to_money("75") == "0,75"
-    assert cents_to_money("9") == "0,09"
-    assert cents_to_money("999") == "9,99"
-    assert cents_to_money("1000", separator_standard=".") == "10.00"
+    assert cents_to_money(1234) == "R$ 12,34"
+    assert cents_to_money("75") == "R$ 0,75"
+    assert cents_to_money("9") == "R$ 0,09"
+    assert cents_to_money("999") == "R$ 9,99"
+    assert cents_to_money("1000", separator_standard=".") == "R$ 10.00"
+
 
 # =============================
 # Testes para database.py
