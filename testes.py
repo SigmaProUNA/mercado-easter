@@ -41,7 +41,7 @@ def test_is_number():
     assert is_number("45,67")  # vírgula
     assert is_number("3/4")    # barra
     assert not is_number("abc")
-    assert not is_number("12.3")  # ponto não suportado
+    assert is_number("12.3") 
     assert not is_number("")
 
 # =============================
