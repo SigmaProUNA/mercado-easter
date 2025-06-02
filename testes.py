@@ -1,7 +1,8 @@
 import pytest
 import os
 import json
-from unittest.mock import patch, MagicMock, mock_open
+from io import StringIO
+from unittest.mock import patch, MagicMock
 
 # Imports dos módulos do projeto
 import fastmath
@@ -123,10 +124,18 @@ class TestMarket:
         }
         fake_config = json.dumps(config_data)
 
-        with patch("builtins.open", mock_open(read_data=fake_config)):
+        # Função para simular o comportamento de open() seletivamente
+        def open_side_effect(path, *args, **kwargs):
+            if "fake_path.json" in path:
+                return StringIO(fake_config)
+            return open_orig(path, *args, **kwargs)
+
+        open_orig = open  # Salva a referência original de open()
+
+        with patch("builtins.open", side_effect=open_side_effect):
             with patch('report.SellReport') as mock_report:
                 mock_report.return_value.initialize.return_value = None
-                
+
                 sql_script = """
                 CREATE TABLE IF NOT EXISTS products (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
