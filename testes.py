@@ -124,35 +124,35 @@ class TestMarket:
         }
         fake_config = json.dumps(config_data)
 
-        # Função para simular o comportamento de open() seletivamente
+        sql_script = """
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            prod_name TEXT NOT NULL,
+            base_price INTEGER NOT NULL,
+            profit INTEGER NOT NULL,
+            unit_price INTEGER NOT NULL,
+            stock INTEGER NOT NULL
+        );
+        """
+
+        open_orig = open  # Referência ao open real
+
         def open_side_effect(path, *args, **kwargs):
             if "fake_path.json" in path:
                 return StringIO(fake_config)
+            elif path.endswith(".sql"):
+                return StringIO(sql_script)
             return open_orig(path, *args, **kwargs)
-
-        open_orig = open  # Salva a referência original de open()
 
         with patch("builtins.open", side_effect=open_side_effect):
             with patch('report.SellReport') as mock_report:
                 mock_report.return_value.initialize.return_value = None
-
-                sql_script = """
-                CREATE TABLE IF NOT EXISTS products (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    prod_name TEXT NOT NULL,
-                    base_price INTEGER NOT NULL,
-                    profit INTEGER NOT NULL,
-                    unit_price INTEGER NOT NULL,
-                    stock INTEGER NOT NULL
-                );
-                """
-
-                with patch('builtins.open', MagicMock(return_value=MagicMock(read=MagicMock(return_value=sql_script)))):
-                    market = market_backend.Market("fake_path.json")
-                    market.add_prod("Produto A", 1000, 10)
-                    market.add_prod("Produto B", 1500, 5)
+                market = market_backend.Market("fake_path.json")
+                market.add_prod("Produto A", 1000, 10)
+                market.add_prod("Produto B", 1500, 5)
 
         return market
+
     
     def test_sell_success(self, market_instance):
         transaction = market_instance.sell(1, 2)
