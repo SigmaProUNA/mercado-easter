@@ -1,8 +1,7 @@
 import pytest
 import os
 import json
-import tempfile
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, mock_open
 
 # Imports dos módulos do projeto
 import fastmath
@@ -122,31 +121,28 @@ class TestMarket:
             "profit": 20.0,
             "sell_csv_path": "temp_sells.csv"
         }
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(config_data, f)
-            config_path = f.name
-        
-        with patch('report.SellReport') as mock_report:
-            mock_report.return_value.initialize.return_value = None
-            
-            sql_script = """
-            CREATE TABLE IF NOT EXISTS products (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                prod_name TEXT NOT NULL,
-                base_price INTEGER NOT NULL,
-                profit INTEGER NOT NULL,
-                unit_price INTEGER NOT NULL,
-                stock INTEGER NOT NULL
-            );
-            """
-            
-            with patch('builtins.open', MagicMock(return_value=MagicMock(read=MagicMock(return_value=sql_script)))):
-                market = market_backend.Market(config_path)
-                market.add_prod("Produto A", 1000, 10)
-                market.add_prod("Produto B", 1500, 5)
+        fake_config = json.dumps(config_data)
+
+        with patch("builtins.open", mock_open(read_data=fake_config)):
+            with patch('report.SellReport') as mock_report:
+                mock_report.return_value.initialize.return_value = None
                 
-        os.unlink(config_path)
+                sql_script = """
+                CREATE TABLE IF NOT EXISTS products (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    prod_name TEXT NOT NULL,
+                    base_price INTEGER NOT NULL,
+                    profit INTEGER NOT NULL,
+                    unit_price INTEGER NOT NULL,
+                    stock INTEGER NOT NULL
+                );
+                """
+
+                with patch('builtins.open', MagicMock(return_value=MagicMock(read=MagicMock(return_value=sql_script)))):
+                    market = market_backend.Market("fake_path.json")
+                    market.add_prod("Produto A", 1000, 10)
+                    market.add_prod("Produto B", 1500, 5)
+
         return market
     
     def test_sell_success(self, market_instance):
