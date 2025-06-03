@@ -4,10 +4,11 @@ import finances
 import front_utils
 import fastmath
 import exceptions
+import os
 
 from PyQt6.QtWidgets import QMainWindow, QLabel, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QTableView, QComboBox, QDialog, QGridLayout, QLineEdit
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QStandardItemModel
+from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtGui import QStandardItemModel, QDesktopServices
 
 
 # Editor do banco
@@ -347,9 +348,17 @@ class MarketWindow(QMainWindow):
     def on_generate(self):
         choice = self.report_combobox.currentIndex()
         
-        report = open(self.backend.generate_report(choice), "r", encoding='utf-8').read()
+        report_file = self.backend.generate_report(choice)
+        report = open(report_file, "r", encoding='utf-8').read()
         
         front_utils.show_markdown(report, self.lang_dict["report_title"])
+        
+        open_external = front_utils.ask_yes_no(self.lang_dict["open_report"], self.lang_dict["open_report_title"])
+        
+        if open_external:
+            url = QUrl(report_file)
+            QDesktopServices.openUrl(url)
+        
         
 
     def on_db_edit(self):
