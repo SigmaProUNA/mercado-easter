@@ -56,9 +56,8 @@ def get_profit(profit_rate: float, base_price: int) -> int:
 
 
 # Adiciona o lucro ao preco base
-def add_profit(profit_rate: float, base_price: int) -> int:
-    return round(base_price + get_profit(profit_rate, base_price))
-
+def add_profit(profit_rate: float, base_price: int) -> int | float:
+    return base_price * profit_rate
 
 if __name__ == "__main__":
     pass
