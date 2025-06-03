@@ -39,6 +39,19 @@ def ask_input(text: str, title: str, default: str = "", input_type: type = str) 
         return ""
     
     
+def ask_yes_no(text: str, title: str) -> bool:
+    msg = QMessageBox()
+    msg.setWindowTitle(title)
+    msg.setText(text)
+    msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+    msg.setDefaultButton(QMessageBox.StandardButton.No)
+    
+    if msg.exec() == QMessageBox.StandardButton.Yes:
+        return True
+    else:
+        return False
+    
+    
 # Exibir um dialogo com tabela e botão de fechar
 def table_dialog(title: str, label: str, headers: list, content: list[list]):    
     dialog = QDialog()

@@ -1,2 +1,0 @@
-#coloquei essa maluquice aqui pra ter certeza que os commits tão indo pra branch certa
-#roda por favor?
