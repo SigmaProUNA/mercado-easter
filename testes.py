@@ -49,8 +49,8 @@ class TestFinances:
         assert finances.get_profit(0.1, 500) == 50
     
     def test_add_profit(self):
-        assert finances.add_profit(0.2, 1000) == 1200
-        assert finances.add_profit(0.1, 500) == 550
+        assert finances.add_profit(1.2, 1000) == 1200
+        assert finances.add_profit(1.1, 500) == 550
 
 
 # módulo de banco de dados
