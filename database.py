@@ -45,7 +45,7 @@ class Database:
             name,
             base_price,
             finances.get_profit(self.profit_rate, base_price),
-            finances.add_profit(self.profit_rate, base_price),
+            finances.add_profit(1+self.profit_rate, base_price),
             stock
             ) # A linha 
         

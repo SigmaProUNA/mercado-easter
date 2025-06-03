@@ -105,7 +105,7 @@ class DbEditor(QDialog):
                     front_utils.message(2, f"{self.lang_dict['empty_fields_noid']}")
                     return
 
-            self.backend.add_prod(inputs[0], inputs[1], inputs[2])
+            self.backend.add_prod(inputs[0], inputs[1]/(1+(self.config["profit"]/100)), inputs[2])
         elif action == 1:
             try:
                 self.backend.remove_prod(prod_id)
