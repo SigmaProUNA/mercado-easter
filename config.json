@@ -2,7 +2,7 @@
     "db_path": "database.db",
     "sell_csv_path": "sell.csv",
     "report_path": "report",
-    "profit": 30,
+    "profit": 0,
     "selected_lang": "ptbr",
     "money_unit": "R$",
     "decimal_place": 2,
