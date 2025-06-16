@@ -5,6 +5,7 @@ from io import StringIO
 from unittest.mock import patch, MagicMock
 
 # importa os outros módulos do projeto, apenas os essenciais
+# colocando isso aqui só pra garantir que tá rodando o teste quando vai pra main
 import fastmath
 import finances
 import database
